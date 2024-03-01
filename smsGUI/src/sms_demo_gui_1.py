@@ -40,21 +40,21 @@ class Ui_MainWindow(object):
 
         # menu widget for where the sidebar buttons will be placed
         self.menu_widget = QtWidgets.QListWidget(self.centralwidget)
-        self.menu_widget.setGeometry(QtCore.QRect(0, 60, 211, 591))
+        self.menu_widget.setGeometry(QtCore.QRect(0, 60, 211, 641))
         self.menu_widget.setObjectName("menu_widget")
 
         # build sidebar buttons corresponding to the GUI's different windows
         self.button_image_capture = QtWidgets.QPushButton(self.centralwidget)
-        self.button_image_capture.setGeometry(QtCore.QRect(0, 80, 211, 51))
+        self.button_image_capture.setGeometry(QtCore.QRect(0, 60, 211, 51))
         self.button_image_capture.setObjectName("button_image_capture")
         self.button_detection = QtWidgets.QPushButton(self.centralwidget)
-        self.button_detection.setGeometry(QtCore.QRect(0, 130, 211, 51))
+        self.button_detection.setGeometry(QtCore.QRect(0, 110, 211, 51))
         self.button_detection.setObjectName("button_detection")
         self.button_report = QtWidgets.QPushButton(self.centralwidget)
-        self.button_report.setGeometry(QtCore.QRect(0, 180, 211, 51))
+        self.button_report.setGeometry(QtCore.QRect(0, 160, 211, 51))
         self.button_report.setObjectName("button_report")
         self.button_help = QtWidgets.QPushButton(self.centralwidget)
-        self.button_help.setGeometry(QtCore.QRect(0, 230, 211, 51))
+        self.button_help.setGeometry(QtCore.QRect(0, 210, 211, 51))
         self.button_help.setObjectName("button_help")
 
         # build stacked widget for different GUI windows
