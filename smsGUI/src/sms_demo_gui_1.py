@@ -134,7 +134,7 @@ class Ui_MainWindow(object):
 
     def windowText(self, main_window):
         _translate = QtCore.QCoreApplication.translate
-        main_window.setWindowTitle(_translate("MainWindow", "demo GUI 2/29/24"))
+        main_window.setWindowTitle(_translate("MainWindow", "SMS InfoComm Motherboard Inspection"))
         self.company_title_1.setText(_translate("MainWindow", "SMS InfoComm"))
         self.company_title_2.setText(_translate("MainWindow", "Motherboard Inspection"))
         self.button_image_capture.setText(_translate("MainWindow", "Image Capture"))
