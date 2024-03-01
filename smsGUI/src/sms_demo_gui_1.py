@@ -1,4 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from pages.ImageCapture import ImageCaptureWidget
+
 import sys
 
 
@@ -58,19 +60,21 @@ class Ui_MainWindow(object):
         self.stackedWidget.setGeometry(QtCore.QRect(220, 60, 841, 581))
         self.stackedWidget.setObjectName("stackedWidget")
 
-        # build image capture window
-        self.image_capture_page = QtWidgets.QWidget()
-        self.image_capture_page.setObjectName("image_capture_page")
+        # # build image capture window
+        self.image_capture_page = ImageCaptureWidget()
+        # self.image_capture_page.setObjectName("image_capture_page")
+        # self.stackedWidget.addWidget(self.image_capture_page)
+        #
+        # # build image capture label (FOR PURPOSE OF IDENTIFYING DIFFERENT WINDOWS)
+        # self.image_capture_label = QtWidgets.QLabel(self.image_capture_page)
+        # self.image_capture_label.setGeometry(QtCore.QRect(180, 140, 431, 221))
+        # font = QtGui.QFont()
+        # font.setPointSize(24)
+        # self.image_capture_label.setFont(font)
+        # self.image_capture_label.setAlignment(QtCore.Qt.AlignCenter)
+        # self.image_capture_label.setObjectName("image_capture_label")
         self.stackedWidget.addWidget(self.image_capture_page)
 
-        # build image capture label (FOR PURPOSE OF IDENTIFYING DIFFERENT WINDOWS)
-        self.image_capture_label = QtWidgets.QLabel(self.image_capture_page)
-        self.image_capture_label.setGeometry(QtCore.QRect(180, 140, 431, 221))
-        font = QtGui.QFont()
-        font.setPointSize(24)
-        self.image_capture_label.setFont(font)
-        self.image_capture_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.image_capture_label.setObjectName("image_capture_label")
 
         # build detection page
         self.detection_page = QtWidgets.QWidget()
@@ -141,7 +145,7 @@ class Ui_MainWindow(object):
         self.button_detection.setText(_translate("MainWindow", "Detection"))
         self.button_report.setText(_translate("MainWindow", "Generate Report"))
         self.button_help.setText(_translate("MainWindow", "Help"))
-        self.image_capture_label.setText(_translate("MainWindow", "IMAGE CAPTURE PAGE"))
+        # self.image_capture_label.setText(_translate("MainWindow", "IMAGE CAPTURE PAGE"))
         self.detection_label.setText(_translate("MainWindow", "DETECTION PAGE"))
         self.report_label.setText(_translate("MainWindow", "REPORT PAGE"))
         self.help_label.setText(_translate("MainWindow", "HELP PAGE"))
