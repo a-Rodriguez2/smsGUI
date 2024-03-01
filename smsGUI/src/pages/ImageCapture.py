@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QWidget, QLabel
-from fsspec.utils import _translate
+
 
 
 class ImageCaptureWidget(QtWidgets.QWidget):
