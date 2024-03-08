@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from pages.ImageCapture import ImageCaptureWidget
 from pages.Detection import DetectionWidget
 from pages.Report import ReportWidget
+from pages.Help import HelpWidget
 
 
 class Ui_MainWindow(object):
@@ -100,17 +101,7 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.generate_report_page)
 
         # MainWindow\centralwidget\stackedWidget\help_page (includes layout)
-        self.help_page = QtWidgets.QWidget()
-        self.help_page.setObjectName("help_page")
-        self.gridLayout_3 = QtWidgets.QGridLayout(self.help_page)
-        self.gridLayout_3.setObjectName("gridLayout_3")
-
-        # MainWindow\centralwidget\stackedWidget\help_page\help_label
-        self.help_label = QtWidgets.QLabel(self.help_page)
-        self.help_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.help_label.setObjectName("help_label")
-        self.gridLayout_3.addWidget(self.help_label, 0, 0, 1, 1)
-
+        self.help_page = HelpWidget()
         # add help_page to stackedWidget
         self.stackedWidget.addWidget(self.help_page)
         self.gridLayout.addWidget(self.stackedWidget, 0, 1, 1, 1)
@@ -138,7 +129,7 @@ class Ui_MainWindow(object):
         self.detection_button.setText(_translate("MainWindow", "Detection"))
         self.generate_report_button.setText(_translate("MainWindow", "Generate Report"))
         self.help_button.setText(_translate("MainWindow", "Help!"))
-        self.help_label.setText(_translate("MainWindow", "HELP LABEL"))
+        # self.help_label.setText(_translate("MainWindow", "HELP LABEL"))
 
 
 if __name__ == "__main__":
