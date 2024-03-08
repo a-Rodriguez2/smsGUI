@@ -1,0 +1,123 @@
+#MainWindow {
+    background-color: rgb(167, 167, 167);
+}
+
+#centralwidget {
+    background-color: rgba(45,44,49,255);
+}
+
+#sidebar_frame {
+    background-color: rgba(30,30,30,255);
+}
+
+#company_name, #app_name {
+    color: rgba(172,177,187,255);
+    font: 75 10pt "Segoe UI";
+    font-weight: bold;
+}
+
+#image_capture_button, #detection_button,
+#generate_report_button, #help_button {
+    font: 9pt "Segoe UI";
+    background-color: rgba(45,44,49,255);
+    color: rgba(172,177,187,255);
+}
+
+#save_as_button, #save_button,
+#save_radio_button, #save_as_radio_button {
+    font: 10pt "Segoe UI";
+    color: rgba(172,177,187,255);
+}
+
+#camera_feed_label, #select_image_label {
+    font: 75 16pt "Segoe UI";
+    font-weight: bold;
+    color: rgba(172,177,187,255);
+}
+
+#capture_image_button, #proceed_button,
+#select_qr_button, #select_barcode_button,
+#matrix_recognition_button, #barcode_recognition_button,
+#ppid_user_save, #run_comparison_button,
+#open_chosen_mobo, #open_result_mobo,
+#open_reference_mobo, #refresh_button,
+#update_button, #preview_report_button,
+#generate_report_button_2 {
+    font: 9pt "Segoe UI";
+    background-color: rgba(0,121,213,255);
+    color: white;
+    border-radius:10px;
+}
+
+#capture_image_button:hover, #proceed_button:hover,
+#select_qr_button:hover, #select_barcode_button:hover,
+#matrix_recognition_button:hover, #barcode_recognition_button:hover,
+#ppid_user_save:hover, #run_comparison_button:hover,
+#open_chosen_mobo:hover, #open_result_mobo:hover,
+#open_reference_mobo:hover, #refresh_button:hover,
+#update_button:hover, #preview_report_button:hover,
+#generate_report_button_2:hover {
+    font: 9pt "Segoe UI";
+    background-color: rgba(0,121,213,255);
+    color: white;
+    border: 2px solid white;
+}
+
+#video_frame, #result_image_frame,
+#chosen_image_frame, #reference_image_frame {
+    background-color: rgba(172,177,187,255);
+}
+
+#video_frame_label, #result_image_label,
+#chosen_image_label, #reference_image_label {
+    font: 75 12pt "Segoe UI";
+    font-weight: bold;
+    color: white;
+}
+
+#zoom_label, #brightness_label,
+#contrast_label, #result_mobo_label,
+#chosen_mobo_label, #reference_mobo_label {
+    font: 75 12pt "Segoe UI";
+    font-weight: bold;
+    color: rgba(172,177,187,255);
+}
+
+#qr_path_label, #barcode_path_label,
+#work_id_label_2, #station_number_label_2,
+#name_label_2, #host_username_label,
+#machine_name_label, #work_id_label,
+#name_label, #station_number_label {
+    font: 75 10pt "Segoe UI";
+    font-weight: bold;
+    color: rgba(172,177,187,255);
+}
+
+#qr_path, #barcode_path,
+#name_result, #machine_name_result,
+#work_id_result, #host_username_result,
+#station_number_result {
+    font: 350 10pt "Segoe UI";
+    color: rgba(172,177,187,255);
+}
+
+#data_matrix_label, #manual_ppid_label,
+#image_compare_label, #saved_info_label_2,
+#gen_info_label, #generate_report_label {
+    font: 75 12pt "Segoe UI";
+    font-weight: bold;
+    color: rgba(172,177,187,255);
+}
+
+#station_edit, #name_edit,
+#work_id_edit, #ppid_user_edit {
+    color: white;
+    background-color: rgba(30,30,30,255);
+    border: 2px solid rgba(30,30,30,255);
+}
+
+#help_label {
+    font: 75 20pt "Segoe UI";
+    font-weight: bold;
+    color: white;
+}
