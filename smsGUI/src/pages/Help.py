@@ -6,16 +6,18 @@ class HelpWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(HelpWidget, self).__init__(parent)
 
-        # Set object name for the widget
         self.setObjectName("help_page")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self)
+        self.gridLayout_3.setObjectName("gridLayout_3")
 
-        # build help label (FOR PURPOSE OF IDENTIFYING DIFFERENT WINDOWS)
+        # MainWindow\centralwidget\stackedWidget\help_page\help_label
         self.help_label = QtWidgets.QLabel(self)
-        self.help_label.setGeometry(QtCore.QRect(180, 140, 431, 221))
-        font = QtGui.QFont()
-        font.setPointSize(24)
-        self.help_label.setFont(font)
         self.help_label.setAlignment(QtCore.Qt.AlignCenter)
         self.help_label.setObjectName("help_label")
+        self.gridLayout_3.addWidget(self.help_label, 0, 0, 1, 1)
+
+        self.translatePage()
+
+    def translatePage(self):
         _translate = QtCore.QCoreApplication.translate
-        self.help_label.setText(_translate("MainWindow", "HELP PAGE"))
+        self.help_label.setText(_translate("MainWindow", "HELP LABEL"))
