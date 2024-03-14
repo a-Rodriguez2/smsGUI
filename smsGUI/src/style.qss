@@ -24,7 +24,8 @@
 }
 
 #save_as_button, #save_button,
-#save_radio_button, #save_as_radio_button {
+#save_radio_button, #save_as_radio_button,
+#result_ppid {
     font: 10pt "Segoe UI";
     color: rgba(172,177,187,255);
 }
@@ -35,7 +36,7 @@
     color: rgba(172,177,187,255);
 }
 
-#capture_image_button, #proceed_button,
+#capture_image_button, #restart_program_button,
 #select_qr_button, #select_barcode_button,
 #matrix_recognition_button, #barcode_recognition_button,
 #ppid_user_save, #run_comparison_button,
@@ -49,7 +50,7 @@
     border-radius:10px;
 }
 
-#capture_image_button:hover, #proceed_button:hover,
+#capture_image_button:hover, #restart_program_button:hover,
 #select_qr_button:hover, #select_barcode_button:hover,
 #matrix_recognition_button:hover, #barcode_recognition_button:hover,
 #ppid_user_save:hover, #run_comparison_button:hover,
@@ -85,9 +86,10 @@
 
 #qr_path_label, #barcode_path_label,
 #work_id_label_2, #station_number_label_2,
-#name_label_2, #host_username_label,
+#name_label_2, #system_username_label,
 #machine_name_label, #work_id_label,
-#name_label, #station_number_label {
+#name_label, #station_number_label,
+#result_ppid_label {
     font: 75 10pt "Segoe UI";
     font-weight: bold;
     color: rgba(172,177,187,255);
@@ -95,7 +97,7 @@
 
 #qr_path, #barcode_path,
 #name_result, #machine_name_result,
-#work_id_result, #host_username_result,
+#work_id_result, #system_username_result,
 #station_number_result {
     font: 350 10pt "Segoe UI";
     color: rgba(172,177,187,255);
@@ -119,5 +121,5 @@
 #help_label {
     font: 75 20pt "Segoe UI";
     font-weight: bold;
-    color: white;
+    color: rgba(172,177,187,255);
 }
