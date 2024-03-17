@@ -1,10 +1,16 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+import cv2
+from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt5.QtCore import *
+from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtWidgets import *
 import os
 from pages.ImageCapture import ImageCaptureWidget
 from pages.Detection import DetectionWidget
 from pages.Report import ReportWidget
 from pages.Help import HelpWidget
+from pages.VideoCapture import VideoThread
+import faulthandler
+
 
 
 class Ui_MainWindow(object):
@@ -129,6 +135,56 @@ class Ui_MainWindow(object):
         # link restart_program_button with program flow
         self.generate_report_page.restart_program_button.clicked.connect(lambda: self.restart())
 
+        # declare video thread, but instantiate when starting or restarting thread
+        self.check_camera()
+        self.video_thread = None
+
+        # link video feed buttons
+        self.image_capture_page.start_feed_btn.clicked.connect(self.start_video)
+        self.image_capture_page.end_feed_btn.clicked.connect(self.stop_video)
+        self.image_capture_page.capture_image_button.clicked.connect(self.capture_frame)
+
+    def start_video(self):
+        # instantiate thread
+        if self.video_thread is None or not self.video_thread.isRunning():
+            self.video_thread = VideoThread()
+            # connect signals with slots and start video capture
+            self.video_thread.update_pixmap_signal.connect(self.update_image)
+            self.video_thread.finished_signal.connect(self.video_finished)
+            self.video_thread.start()
+
+    # checks for thread activity before stopping thread
+    def stop_video(self):
+        if self.video_thread is not None and self.video_thread.isRunning():
+            self.video_thread.stop()
+
+    def update_image(self, frame):
+        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        flipImage = cv2.flip(image, 1)
+        convertToQt = QImage(flipImage.data, flipImage.shape[1], flipImage.shape[0], QImage.Format_RGB888)
+        pic = convertToQt.scaled(1280, 720, Qt.KeepAspectRatio)
+        self.image_capture_page.video_frame_label.setPixmap(QPixmap.fromImage(pic))
+
+    def video_finished(self):
+        self.image_capture_page.video_frame_label.setText('- Video Frame -')
+
+    def capture_frame(self):
+        if self.video_thread is not None and self.video_thread.isRunning():
+            # check whether image capture should be 'save' or 'save as'
+            save_file = self.image_capture_page.save_button.isChecked()
+            self.video_thread.capture_frame(save_file)
+
+    # disables feed buttons if camera device does not exist
+    def check_camera(self):
+        cap = cv2.VideoCapture(0)
+
+        if not cap.isOpened():
+            self.image_capture_page.start_feed_btn.setDisabled(True)
+            self.image_capture_page.end_feed_btn.setDisabled(True)
+            self.image_capture_page.video_frame_label.setText('- Video Frame -\nNo Camera Detected!')
+            self.image_capture_page.capture_image_button.setDisabled(True)
+        cap.release()
+
     # checks whether a directory for captured images already exists before making one
     @staticmethod
     def image_folder():
@@ -181,7 +237,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SMS Demo Gui V8"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SMS Demo Gui V10"))
         self.company_name.setText(_translate("MainWindow", "SMS InfoComm"))
         self.app_name.setText(_translate("MainWindow", "Motherboard Inspection"))
         self.image_capture_button.setText(_translate("MainWindow", "Image Capture"))
@@ -192,6 +248,8 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
+
+    faulthandler.enable()
 
     app = QtWidgets.QApplication(sys.argv)
 
