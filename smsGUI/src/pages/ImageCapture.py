@@ -1,4 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+import os
 
 
 class ImageCaptureWidget(QtWidgets.QWidget):
@@ -192,18 +194,6 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.select_image_label.setObjectName("select_image_label")
         self.image_select_layout.addWidget(self.select_image_label, 0, 0, 1, 2)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\proceed_button
-        self.proceed_button = QtWidgets.QPushButton(self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.proceed_button.sizePolicy().hasHeightForWidth())
-        self.proceed_button.setSizePolicy(sizePolicy)
-        self.proceed_button.setMinimumSize(QtCore.QSize(141, 40))
-        self.proceed_button.setMaximumSize(QtCore.QSize(141, 40))
-        self.proceed_button.setObjectName("proceed_button")
-        self.image_select_layout.addWidget(self.proceed_button, 0, 3, 1, 1)
-
         # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\select_qr_button
         self.select_qr_button = QtWidgets.QPushButton(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -262,10 +252,32 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.barcode_path.setObjectName("barcode_path")
         self.image_select_layout.addWidget(self.barcode_path, 2, 2, 1, 1)
 
-        # add image_select_layout to image_capture_page
+        # add image_select_layout to image_capture_page and translate page
         self.gridLayout_9.addLayout(self.image_select_layout, 1, 0, 1, 1)
-
         self.translatePage()
+
+        # link 'select image buttons'
+        self.select_qr_button.clicked.connect(lambda: self.open_file_dialog(0))
+        self.select_barcode_button.clicked.connect(lambda: self.open_file_dialog(1))
+
+    # script that updates the qr/barcode path labels with actual image paths
+    def open_file_dialog(self, image_type):
+        options = QFileDialog.Options()
+
+        # prompt depends on the type of image being selected
+        prompt = None
+        if image_type == 0:
+            prompt = 'Select a QR Code Image'
+        elif image_type == 1:
+            prompt = 'Select a Barcode Image'
+
+        # returns file path and filter string
+        filePath, _ = QFileDialog.getOpenFileName(self, prompt, "", "PNG Files (*.png);;All Files (*)", options=options)
+        if filePath:
+            if image_type == 0:
+                self.qr_path.setText(filePath)
+            elif image_type == 1:
+                self.barcode_path.setText(filePath)
 
     def translatePage(self):
         _translate = QtCore.QCoreApplication.translate
@@ -279,7 +291,6 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.brightness_label.setText(_translate("MainWindow", "Brightness"))
         self.contrast_label.setText(_translate("MainWindow", "Contrast"))
         self.select_image_label.setText(_translate("MainWindow", "o  Select Images for Detection"))
-        self.proceed_button.setText(_translate("MainWindow", "Proceed to Detection"))
         self.select_qr_button.setText(_translate("MainWindow", "Select Image (QR Code)"))
         self.qr_path_label.setText(_translate("MainWindow", "Image Path (QR Code):"))
         self.qr_path.setText(_translate("MainWindow", "No Image Selected!"))

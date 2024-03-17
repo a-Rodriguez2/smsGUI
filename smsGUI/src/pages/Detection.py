@@ -15,6 +15,18 @@ class DetectionWidget(QtWidgets.QWidget):
         self.detection_prompts.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.detection_prompts.setObjectName("detection_prompts")
 
+        # MainWindow\centralwidget\stackedWidget\detection_page\detection_prompts\result_ppid_label
+        self.result_ppid_label = QtWidgets.QLabel(self)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.result_ppid_label.sizePolicy().hasHeightForWidth())
+        self.result_ppid_label.setSizePolicy(sizePolicy)
+        self.result_ppid_label.setMinimumSize(QtCore.QSize(80, 30))
+        self.result_ppid_label.setMaximumSize(QtCore.QSize(80, 30))
+        self.result_ppid_label.setObjectName("result_ppid_label")
+        self.detection_prompts.addWidget(self.result_ppid_label, 5, 0, 1, 1)
+
         # MainWindow\centralwidget\stackedWidget\detection_page\detection_prompts\data_matrix_label
         self.data_matrix_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -90,7 +102,7 @@ class DetectionWidget(QtWidgets.QWidget):
         self.image_compare_label.setMinimumSize(QtCore.QSize(0, 40))
         self.image_compare_label.setMaximumSize(QtCore.QSize(16777215, 40))
         self.image_compare_label.setObjectName("image_compare_label")
-        self.detection_prompts.addWidget(self.image_compare_label, 4, 0, 1, 1)
+        self.detection_prompts.addWidget(self.image_compare_label, 6, 0, 1, 1)
 
         # MainWindow\centralwidget\stackedWidget\detection_page\detection_prompts\run_comparison_button
         self.run_comparison_button = QtWidgets.QPushButton(self)
@@ -102,7 +114,12 @@ class DetectionWidget(QtWidgets.QWidget):
         self.run_comparison_button.setMinimumSize(QtCore.QSize(131, 40))
         self.run_comparison_button.setMaximumSize(QtCore.QSize(131, 40))
         self.run_comparison_button.setObjectName("run_comparison_button")
-        self.detection_prompts.addWidget(self.run_comparison_button, 5, 0, 1, 1)
+        self.detection_prompts.addWidget(self.run_comparison_button, 7, 0, 1, 1)
+
+        # MainWindow\centralwidget\stackedWidget\detection_page\detection_prompts\result_ppid
+        self.result_ppid = QtWidgets.QLabel(self)
+        self.result_ppid.setObjectName("result_ppid")
+        self.detection_prompts.addWidget(self.result_ppid, 5, 1, 1, 1)
 
         # add detection_prompts to detection_page
         self.gridLayout_7.addLayout(self.detection_prompts, 0, 0, 1, 1)
@@ -301,4 +318,5 @@ class DetectionWidget(QtWidgets.QWidget):
         self.reference_mobo_label.setText(_translate("MainWindow", "Reference Motherboard"))
         self.reference_image_label.setText(_translate("MainWindow", "- Reference Image Frame -"))
         self.open_reference_mobo.setText(_translate("MainWindow", "Open File Location"))
-
+        self.result_ppid.setText(_translate("MainWindow", "None"))
+        self.result_ppid_label.setText(_translate("MainWindow", "Result PPID:"))
