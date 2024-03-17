@@ -12,6 +12,7 @@ from pages.VideoCapture import VideoThread
 import faulthandler
 
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
 
