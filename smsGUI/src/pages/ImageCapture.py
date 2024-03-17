@@ -1,4 +1,16 @@
+import time
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+import os
+import sys
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+import cv2
+
+
+# compatible with sms_demo_gui_9
 
 
 class ImageCaptureWidget(QtWidgets.QWidget):
@@ -18,13 +30,13 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\save_as_button
         self.save_as_button = QtWidgets.QRadioButton(self)
         self.save_as_button.setObjectName("save_as_button")
-        self.camera_layout.addWidget(self.save_as_button, 3, 1, 1, 1)
+        self.camera_layout.addWidget(self.save_as_button, 4, 3, 1, 1)
 
         # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\save_button
         self.save_button = QtWidgets.QRadioButton(self)
         self.save_button.setChecked(True)
         self.save_button.setObjectName("save_button")
-        self.camera_layout.addWidget(self.save_button, 2, 1, 1, 1)
+        self.camera_layout.addWidget(self.save_button, 3, 3, 1, 1)
 
         # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\camera_feed_label
         self.camera_feed_label = QtWidgets.QLabel(self)
@@ -48,37 +60,45 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.capture_image_button.setMinimumSize(QtCore.QSize(131, 40))
         self.capture_image_button.setMaximumSize(QtCore.QSize(131, 40))
         self.capture_image_button.setObjectName("capture_image_button")
-        self.camera_layout.addWidget(self.capture_image_button, 2, 0, 2, 1)
+        self.camera_layout.addWidget(self.capture_image_button, 3, 0, 2, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\video_frame (includes layout)
-        self.video_frame = QtWidgets.QFrame(self)
+        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\video_frame_label
+        self.video_frame_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.video_frame.sizePolicy().hasHeightForWidth())
-        self.video_frame.setSizePolicy(sizePolicy)
-        self.video_frame.setMinimumSize(QtCore.QSize(640, 360))
-        self.video_frame.setMaximumSize(QtCore.QSize(640, 360))
-        self.video_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.video_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.video_frame.setObjectName("video_frame")
-        self.gridLayout_2 = QtWidgets.QGridLayout(self.video_frame)
-        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout_2.setObjectName("gridLayout_2")
-
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\video_frame\video_frame_label
-        self.video_frame_label = QtWidgets.QLabel(self.video_frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.video_frame_label.sizePolicy().hasHeightForWidth())
         self.video_frame_label.setSizePolicy(sizePolicy)
+        self.video_frame_label.setMinimumSize(QtCore.QSize(640, 360))
+        self.video_frame_label.setMaximumSize(QtCore.QSize(640, 360))
         self.video_frame_label.setAlignment(QtCore.Qt.AlignCenter)
         self.video_frame_label.setObjectName("video_frame_label")
-        self.gridLayout_2.addWidget(self.video_frame_label, 0, 1, 1, 1)
+        self.camera_layout.addWidget(self.video_frame_label, 2, 0, 1, 4)
 
-        # add video_frame to camera_layout
-        self.camera_layout.addWidget(self.video_frame, 1, 0, 1, 2)
+        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\video_frame\start_feed_btn
+        self.start_feed_btn = QtWidgets.QPushButton(self)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.start_feed_btn.sizePolicy().hasHeightForWidth())
+        self.start_feed_btn.setSizePolicy(sizePolicy)
+        self.start_feed_btn.setMinimumSize(QtCore.QSize(90, 30))
+        self.start_feed_btn.setMaximumSize(QtCore.QSize(90, 30))
+        self.start_feed_btn.setObjectName("start_feed_btn")
+        self.camera_layout.addWidget(self.start_feed_btn, 0, 2, 1, 1)
+
+        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\video_frame\end_feed_btn
+        self.end_feed_btn = QtWidgets.QPushButton(self)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.end_feed_btn.sizePolicy().hasHeightForWidth())
+        self.end_feed_btn.setSizePolicy(sizePolicy)
+        self.end_feed_btn.setMinimumSize(QtCore.QSize(90, 30))
+        self.end_feed_btn.setMaximumSize(QtCore.QSize(90, 30))
+        self.end_feed_btn.setObjectName("end_feed_btn")
+        self.camera_layout.addWidget(self.end_feed_btn, 0, 3, 1, 1)
+
         # add camera_layout to image_capture_page
         self.gridLayout_9.addLayout(self.camera_layout, 0, 0, 1, 1)
 
@@ -192,18 +212,6 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.select_image_label.setObjectName("select_image_label")
         self.image_select_layout.addWidget(self.select_image_label, 0, 0, 1, 2)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\proceed_button
-        self.proceed_button = QtWidgets.QPushButton(self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.proceed_button.sizePolicy().hasHeightForWidth())
-        self.proceed_button.setSizePolicy(sizePolicy)
-        self.proceed_button.setMinimumSize(QtCore.QSize(141, 40))
-        self.proceed_button.setMaximumSize(QtCore.QSize(141, 40))
-        self.proceed_button.setObjectName("proceed_button")
-        self.image_select_layout.addWidget(self.proceed_button, 0, 3, 1, 1)
-
         # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\select_qr_button
         self.select_qr_button = QtWidgets.QPushButton(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -262,10 +270,32 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.barcode_path.setObjectName("barcode_path")
         self.image_select_layout.addWidget(self.barcode_path, 2, 2, 1, 1)
 
-        # add image_select_layout to image_capture_page
+        # add image_select_layout to image_capture_page and translate page
         self.gridLayout_9.addLayout(self.image_select_layout, 1, 0, 1, 1)
-
         self.translatePage()
+
+        # link buttons
+        self.select_qr_button.clicked.connect(lambda: self.open_file_dialog(0))
+        self.select_barcode_button.clicked.connect(lambda: self.open_file_dialog(1))
+
+    # script that updates the qr/barcode path labels with actual image paths
+    def open_file_dialog(self, image_type):
+        options = QFileDialog.Options()
+
+        # prompt depends on the type of image being selected
+        prompt = None
+        if image_type == 0:
+            prompt = 'Select a QR Code Image'
+        elif image_type == 1:
+            prompt = 'Select a Barcode Image'
+
+        # returns file path and filter string
+        filePath, _ = QFileDialog.getOpenFileName(self, prompt, "", "PNG Files (*.png);;All Files (*)", options=options)
+        if filePath:
+            if image_type == 0:
+                self.qr_path.setText(filePath)
+            elif image_type == 1:
+                self.barcode_path.setText(filePath)
 
     def translatePage(self):
         _translate = QtCore.QCoreApplication.translate
@@ -279,10 +309,11 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.brightness_label.setText(_translate("MainWindow", "Brightness"))
         self.contrast_label.setText(_translate("MainWindow", "Contrast"))
         self.select_image_label.setText(_translate("MainWindow", "o  Select Images for Detection"))
-        self.proceed_button.setText(_translate("MainWindow", "Proceed to Detection"))
         self.select_qr_button.setText(_translate("MainWindow", "Select Image (QR Code)"))
         self.qr_path_label.setText(_translate("MainWindow", "Image Path (QR Code):"))
         self.qr_path.setText(_translate("MainWindow", "No Image Selected!"))
         self.select_barcode_button.setText(_translate("MainWindow", "Select Image (Barcode)"))
         self.barcode_path_label.setText(_translate("MainWindow", "Image Path (Barcode):"))
         self.barcode_path.setText(_translate("MainWindow", "No Image Selected!"))
+        self.start_feed_btn.setText(_translate("MainWindow", "Start Feed"))
+        self.end_feed_btn.setText(_translate("MainWindow", "End Feed"))

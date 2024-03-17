@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import getpass
+import socket
 
 
 class ReportWidget(QtWidgets.QWidget):
@@ -21,8 +22,8 @@ class ReportWidget(QtWidgets.QWidget):
 
         # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\name_result
         self.name_result.setSizePolicy(sizePolicy)
-        self.name_result.setMinimumSize(QtCore.QSize(100, 30))
-        self.name_result.setMaximumSize(QtCore.QSize(100, 30))
+        self.name_result.setMinimumSize(QtCore.QSize(150, 30))
+        self.name_result.setMaximumSize(QtCore.QSize(150, 30))
         self.name_result.setObjectName("name_result")
         self.information_layout.addWidget(self.name_result, 1, 4, 1, 1)
 
@@ -69,22 +70,22 @@ class ReportWidget(QtWidgets.QWidget):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.machine_name_result.sizePolicy().hasHeightForWidth())
         self.machine_name_result.setSizePolicy(sizePolicy)
-        self.machine_name_result.setMinimumSize(QtCore.QSize(100, 30))
-        self.machine_name_result.setMaximumSize(QtCore.QSize(100, 30))
+        self.machine_name_result.setMinimumSize(QtCore.QSize(150, 30))
+        self.machine_name_result.setMaximumSize(QtCore.QSize(150, 30))
         self.machine_name_result.setObjectName("machine_name_result")
         self.information_layout.addWidget(self.machine_name_result, 5, 4, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\refresh_button
-        self.refresh_button = QtWidgets.QPushButton(self)
+        # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\update_button
+        self.update_button = QtWidgets.QPushButton(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.refresh_button.sizePolicy().hasHeightForWidth())
-        self.refresh_button.setSizePolicy(sizePolicy)
-        self.refresh_button.setMinimumSize(QtCore.QSize(50, 30))
-        self.refresh_button.setMaximumSize(QtCore.QSize(50, 30))
-        self.refresh_button.setObjectName("refresh_button")
-        self.information_layout.addWidget(self.refresh_button, 6, 3, 1, 1)
+        sizePolicy.setHeightForWidth(self.update_button.sizePolicy().hasHeightForWidth())
+        self.update_button.setSizePolicy(sizePolicy)
+        self.update_button.setMinimumSize(QtCore.QSize(50, 30))
+        self.update_button.setMaximumSize(QtCore.QSize(50, 30))
+        self.update_button.setObjectName("update_button")
+        self.information_layout.addWidget(self.update_button, 6, 3, 1, 1)
 
         # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\work_id_result
         self.work_id_result = QtWidgets.QLabel(self)
@@ -93,22 +94,22 @@ class ReportWidget(QtWidgets.QWidget):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.work_id_result.sizePolicy().hasHeightForWidth())
         self.work_id_result.setSizePolicy(sizePolicy)
-        self.work_id_result.setMinimumSize(QtCore.QSize(100, 30))
-        self.work_id_result.setMaximumSize(QtCore.QSize(100, 30))
+        self.work_id_result.setMinimumSize(QtCore.QSize(150, 30))
+        self.work_id_result.setMaximumSize(QtCore.QSize(150, 30))
         self.work_id_result.setObjectName("work_id_result")
         self.information_layout.addWidget(self.work_id_result, 2, 4, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\host_username_result
-        self.host_username_result = QtWidgets.QLabel(self)
+        # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\system_username_result
+        self.system_username_result = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.host_username_result.sizePolicy().hasHeightForWidth())
-        self.host_username_result.setSizePolicy(sizePolicy)
-        self.host_username_result.setMinimumSize(QtCore.QSize(100, 30))
-        self.host_username_result.setMaximumSize(QtCore.QSize(100, 30))
-        self.host_username_result.setObjectName("host_username_result")
-        self.information_layout.addWidget(self.host_username_result, 4, 4, 1, 1)
+        sizePolicy.setHeightForWidth(self.system_username_result.sizePolicy().hasHeightForWidth())
+        self.system_username_result.setSizePolicy(sizePolicy)
+        self.system_username_result.setMinimumSize(QtCore.QSize(150, 30))
+        self.system_username_result.setMaximumSize(QtCore.QSize(150, 30))
+        self.system_username_result.setObjectName("system_username_result")
+        self.information_layout.addWidget(self.system_username_result, 4, 4, 1, 1)
 
         # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\name_label_2
         self.name_label_2 = QtWidgets.QLabel(self)
@@ -122,17 +123,17 @@ class ReportWidget(QtWidgets.QWidget):
         self.name_label_2.setObjectName("name_label_2")
         self.information_layout.addWidget(self.name_label_2, 1, 3, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\host_username_label
-        self.host_username_label = QtWidgets.QLabel(self)
+        # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\system_username_label
+        self.system_username_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.host_username_label.sizePolicy().hasHeightForWidth())
-        self.host_username_label.setSizePolicy(sizePolicy)
-        self.host_username_label.setMinimumSize(QtCore.QSize(110, 30))
-        self.host_username_label.setMaximumSize(QtCore.QSize(110, 30))
-        self.host_username_label.setObjectName("host_username_label")
-        self.information_layout.addWidget(self.host_username_label, 4, 3, 1, 1)
+        sizePolicy.setHeightForWidth(self.system_username_label.sizePolicy().hasHeightForWidth())
+        self.system_username_label.setSizePolicy(sizePolicy)
+        self.system_username_label.setMinimumSize(QtCore.QSize(110, 30))
+        self.system_username_label.setMaximumSize(QtCore.QSize(110, 30))
+        self.system_username_label.setObjectName("system_username_label")
+        self.information_layout.addWidget(self.system_username_label, 4, 3, 1, 1)
 
         # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\station_number_result
         self.station_number_result = QtWidgets.QLabel(self)
@@ -141,8 +142,8 @@ class ReportWidget(QtWidgets.QWidget):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.station_number_result.sizePolicy().hasHeightForWidth())
         self.station_number_result.setSizePolicy(sizePolicy)
-        self.station_number_result.setMinimumSize(QtCore.QSize(100, 30))
-        self.station_number_result.setMaximumSize(QtCore.QSize(100, 30))
+        self.station_number_result.setMinimumSize(QtCore.QSize(150, 30))
+        self.station_number_result.setMaximumSize(QtCore.QSize(150, 30))
         self.station_number_result.setObjectName("station_number_result")
         self.information_layout.addWidget(self.station_number_result, 3, 4, 1, 1)
 
@@ -157,18 +158,6 @@ class ReportWidget(QtWidgets.QWidget):
         self.machine_name_label.setMaximumSize(QtCore.QSize(110, 30))
         self.machine_name_label.setObjectName("machine_name_label")
         self.information_layout.addWidget(self.machine_name_label, 5, 3, 1, 1)
-
-        # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\update_button
-        self.update_button = QtWidgets.QPushButton(self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.update_button.sizePolicy().hasHeightForWidth())
-        self.update_button.setSizePolicy(sizePolicy)
-        self.update_button.setMinimumSize(QtCore.QSize(50, 30))
-        self.update_button.setMaximumSize(QtCore.QSize(50, 30))
-        self.update_button.setObjectName("update_button")
-        self.information_layout.addWidget(self.update_button, 4, 0, 1, 1)
 
         # MainWindow\centralwidget\stackedWidget\generate_report_page\information_layout\work_id_label
         self.work_id_label = QtWidgets.QLabel(self)
@@ -316,14 +305,42 @@ class ReportWidget(QtWidgets.QWidget):
         self.save_as_radio_button.setObjectName("save_as_radio_button")
         self.generate_report_layout.addWidget(self.save_as_radio_button, 2, 1, 1, 1)
 
+        # MainWindow\centralwidget\stackedWidget\generate_report_page\generate_report_layout\restart_program_button
+        self.restart_program_button = QtWidgets.QPushButton(self)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.restart_program_button.sizePolicy().hasHeightForWidth())
+        self.restart_program_button.setSizePolicy(sizePolicy)
+        self.restart_program_button.setMinimumSize(QtCore.QSize(131, 40))
+        self.restart_program_button.setObjectName("restart_program_button")
+        self.generate_report_layout.addWidget(self.restart_program_button, 2, 2, 1, 1)
+
         # MainWindow\centralwidget\stackedWidget\generate_report_page\generate_report_layout\generate_report_spacer
         spacerItem5 = QtWidgets.QSpacerItem(600, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.generate_report_layout.addItem(spacerItem5, 1, 2, 1, 1)
 
-        # add generate_report_layout to generate_report_page
+        # add generate_report_layout to generate_report_page and translate page
         self.verticalLayout_2.addLayout(self.generate_report_layout)
-
         self.translatePage()
+
+        # link update_button to saved information labels
+        self.update_button.clicked.connect(lambda: self.update_info())
+
+    # update saved information based on OS/machine credentials and user-edited information
+    def update_info(self):
+
+        # update information using existing line edits
+        if self.name_edit.text() != '':
+            self.name_result.setText(self.name_edit.text())
+        if self.work_id_edit.text() != '':
+            self.work_id_result.setText(self.work_id_edit.text())
+        if self.station_edit.text() != '':
+            self.station_number_result.setText(self.station_edit.text())
+
+        self.system_username_result.setText(getpass.getuser())
+        self.machine_name_result.setText(socket.gethostname())
+
     def translatePage(self):
         _translate = QtCore.QCoreApplication.translate
 
@@ -332,14 +349,13 @@ class ReportWidget(QtWidgets.QWidget):
         self.saved_info_label_2.setText(_translate("MainWindow", "o  Saved Information"))
         self.station_number_label_2.setText(_translate("MainWindow", "Station Number:"))
         self.machine_name_result.setText(_translate("MainWindow", "None"))
-        self.refresh_button.setText(_translate("MainWindow", "Refresh"))
+        self.update_button.setText(_translate("MainWindow", "Update"))
         self.work_id_result.setText(_translate("MainWindow", "None"))
-        self.host_username_result.setText(_translate("MainWindow", "None"))
+        self.system_username_result.setText(_translate("MainWindow", "None"))
         self.name_label_2.setText(_translate("MainWindow", "Name:"))
-        self.host_username_label.setText(_translate("MainWindow", "Host Username:"))
+        self.system_username_label.setText(_translate("MainWindow", "System Username:"))
         self.station_number_result.setText(_translate("MainWindow", "None"))
         self.machine_name_label.setText(_translate("MainWindow", "Machine Name:"))
-        self.update_button.setText(_translate("MainWindow", "Update"))
         self.work_id_label.setText(_translate("MainWindow", "Work ID:"))
         self.gen_info_label.setText(_translate("MainWindow", "o  General Information"))
         self.name_label.setText(_translate("MainWindow", "Name:"))
@@ -349,3 +365,4 @@ class ReportWidget(QtWidgets.QWidget):
         self.generate_report_button_2.setText(_translate("MainWindow", "Generate Report"))
         self.save_radio_button.setText(_translate("MainWindow", "- Save -  "))
         self.save_as_radio_button.setText(_translate("MainWindow", "- Save As -"))
+        self.restart_program_button.setText(_translate("MainWindow", "Restart Program"))
