@@ -19,26 +19,27 @@ class ImageCaptureWidget(QtWidgets.QWidget):
 
         self.setObjectName("image_capture_page")
 
-        # image_capture_page layout
-        self.gridLayout_9 = QtWidgets.QGridLayout(self)
-        self.gridLayout_9.setObjectName("gridLayout_9")
+        # image_capture_page_layout
+        self.image_capture_page_layout = QtWidgets.QGridLayout(self)
+        self.image_capture_page_layout.setObjectName("image_capture_page_layout")
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout
+        # camera_layout
         self.camera_layout = QtWidgets.QGridLayout()
+        self.camera_layout.setContentsMargins(10, 10, 10, 10)
         self.camera_layout.setObjectName("camera_layout")
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\save_as_button
+        # camera_layout\save_as_button
         self.save_as_button = QtWidgets.QRadioButton(self)
         self.save_as_button.setObjectName("save_as_button")
         self.camera_layout.addWidget(self.save_as_button, 4, 3, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\save_button
+        # camera_layout\save_button
         self.save_button = QtWidgets.QRadioButton(self)
         self.save_button.setChecked(True)
         self.save_button.setObjectName("save_button")
         self.camera_layout.addWidget(self.save_button, 3, 3, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\camera_feed_label
+        # camera_layout\camera_feed_label
         self.camera_feed_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -50,7 +51,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.camera_feed_label.setObjectName("camera_feed_label")
         self.camera_layout.addWidget(self.camera_feed_label, 0, 0, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\capture_image_button
+        # camera_layout\capture_image_button
         self.capture_image_button = QtWidgets.QPushButton(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -62,7 +63,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.capture_image_button.setObjectName("capture_image_button")
         self.camera_layout.addWidget(self.capture_image_button, 3, 0, 2, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\video_frame_label
+        # camera_layout\video_frame_label
         self.video_frame_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -75,7 +76,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.video_frame_label.setObjectName("video_frame_label")
         self.camera_layout.addWidget(self.video_frame_label, 2, 0, 1, 4)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\video_frame\start_feed_btn
+        # camera_layout\start_feed_btn
         self.start_feed_btn = QtWidgets.QPushButton(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -87,7 +88,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.start_feed_btn.setObjectName("start_feed_btn")
         self.camera_layout.addWidget(self.start_feed_btn, 0, 2, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\camera_layout\video_frame\end_feed_btn
+        # camera_layout\end_feed_btn
         self.end_feed_btn = QtWidgets.QPushButton(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -99,14 +100,15 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.end_feed_btn.setObjectName("end_feed_btn")
         self.camera_layout.addWidget(self.end_feed_btn, 0, 3, 1, 1)
 
-        # add camera_layout to image_capture_page
-        self.gridLayout_9.addLayout(self.camera_layout, 0, 0, 1, 1)
+        # add camera_layout to image_capture_page_layout
+        self.image_capture_page_layout.addLayout(self.camera_layout, 0, 0, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_manip_layout
+        # image_manip_layout
         self.image_manip_layout = QtWidgets.QGridLayout()
+        self.image_manip_layout.setContentsMargins(10, 10, 10, 10)
         self.image_manip_layout.setObjectName("image_manip_layout")
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_manip_layout\zoom_label
+        # image_manip_layout\zoom_label
         self.zoom_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -119,7 +121,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.zoom_label.setObjectName("zoom_label")
         self.image_manip_layout.addWidget(self.zoom_label, 0, 1, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_manip_layout\zoom_slider
+        # image_manip_layout\zoom_slider
         self.zoom_slider = QtWidgets.QSlider(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -133,11 +135,11 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.zoom_slider.setObjectName("zoom_slider")
         self.image_manip_layout.addWidget(self.zoom_slider, 1, 1, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_manip_layout\image_manip_spacer
+        # image_manip_layout\spacerItem2 (image manip spacer)
         spacerItem2 = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.image_manip_layout.addItem(spacerItem2, 2, 0, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_manip_layout\brightness_label
+        # image_manip_layout\brightness_label
         self.brightness_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -150,11 +152,11 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.brightness_label.setObjectName("brightness_label")
         self.image_manip_layout.addWidget(self.brightness_label, 2, 1, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_manip_layout\image_manip_spacer
+        # image_manip_layout\image_manip_spacer
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.image_manip_layout.addItem(spacerItem3, 2, 2, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_manip_layout\brightness_slider
+        # image_manip_layout\brightness_slider
         self.brightness_slider = QtWidgets.QSlider(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -167,7 +169,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.brightness_slider.setObjectName("brightness_slider")
         self.image_manip_layout.addWidget(self.brightness_slider, 3, 1, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_manip_layout\contrast_label
+        # image_manip_layout\contrast_label
         self.contrast_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -180,7 +182,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.contrast_label.setObjectName("contrast_label")
         self.image_manip_layout.addWidget(self.contrast_label, 4, 1, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_manip_layout\contrast_slider
+        # image_manip_layout\contrast_slider
         self.contrast_slider = QtWidgets.QSlider(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -193,14 +195,15 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.contrast_slider.setObjectName("contrast_slider")
         self.image_manip_layout.addWidget(self.contrast_slider, 5, 1, 1, 1)
 
-        # add image_manip_layout to image_capture_page
-        self.gridLayout_9.addLayout(self.image_manip_layout, 0, 1, 1, 1)
+        # add image_manip_layout to image_capture_page_layout
+        self.image_capture_page_layout.addLayout(self.image_manip_layout, 0, 1, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout
+        # image_select_layout
         self.image_select_layout = QtWidgets.QGridLayout()
+        self.image_select_layout.setContentsMargins(10, 10, 10, 10)
         self.image_select_layout.setObjectName("image_select_layout")
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\select_image_label
+        # image_select_layout\select_image_label
         self.select_image_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -212,7 +215,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.select_image_label.setObjectName("select_image_label")
         self.image_select_layout.addWidget(self.select_image_label, 0, 0, 1, 2)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\select_qr_button
+        # image_select_layout\select_qr_button
         self.select_qr_button = QtWidgets.QPushButton(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -224,7 +227,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.select_qr_button.setObjectName("select_qr_button")
         self.image_select_layout.addWidget(self.select_qr_button, 1, 0, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\qr_path_label
+        # image_select_layout\qr_path_label
         self.qr_path_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -236,12 +239,12 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.qr_path_label.setObjectName("qr_path_label")
         self.image_select_layout.addWidget(self.qr_path_label, 1, 1, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\qr_path
+        # image_select_layout\qr_path
         self.qr_path = QtWidgets.QLabel(self)
         self.qr_path.setObjectName("qr_path")
         self.image_select_layout.addWidget(self.qr_path, 1, 2, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\select_barcode_button
+        # image_select_layout\select_barcode_button
         self.select_barcode_button = QtWidgets.QPushButton(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -253,7 +256,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.select_barcode_button.setObjectName("select_barcode_button")
         self.image_select_layout.addWidget(self.select_barcode_button, 2, 0, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\barcode_path_label
+        # image_select_layout\barcode_path_label
         self.barcode_path_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -265,13 +268,15 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.barcode_path_label.setObjectName("barcode_path_label")
         self.image_select_layout.addWidget(self.barcode_path_label, 2, 1, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page\image_select_layout\barcode_path
+        # image_select_layout\barcode_path
         self.barcode_path = QtWidgets.QLabel(self)
         self.barcode_path.setObjectName("barcode_path")
         self.image_select_layout.addWidget(self.barcode_path, 2, 2, 1, 1)
 
-        # add image_select_layout to image_capture_page and translate page
-        self.gridLayout_9.addLayout(self.image_select_layout, 1, 0, 1, 1)
+        # add image_select_layout to image_capture_page_layout
+        self.image_capture_page_layout.addLayout(self.image_select_layout, 1, 0, 1, 1)
+
+        # translate image_capture_page
         self.translatePage()
 
         # link buttons
