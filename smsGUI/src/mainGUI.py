@@ -1,16 +1,15 @@
 import cv2
-from PyQt5 import QtGui, QtWidgets, QtCore
+import os
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import *
-import os
 from pages.ImageCapture import ImageCaptureWidget
 from pages.Detection import DetectionWidget
 from pages.Report import ReportWidget
 from pages.Help import HelpWidget
 from pages.VideoCapture import VideoThread
-import faulthandler
-
+import pages.decodePic as dp
 
 
 class Ui_MainWindow(object):
@@ -18,107 +17,134 @@ class Ui_MainWindow(object):
 
         # MainWindow
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1280, 720)
+        MainWindow.resize(1600, 900)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setMinimumSize(QtCore.QSize(1600, 900))
 
-        # MainWindow\centralwidget (includes layout)
+        # centralwidget
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setMinimumSize(QtCore.QSize(1280, 720))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
+        self.centralwidget.setSizePolicy(sizePolicy)
+        self.centralwidget.setMinimumSize(QtCore.QSize(1600, 900))
         self.centralwidget.setObjectName("centralwidget")
-        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout.setObjectName("gridLayout")
 
-        # MainWindow\centralwidget\sidebar_frame (includes layout)
+        # central_widget_layout
+        self.central_widget_layout = QtWidgets.QGridLayout(self.centralwidget)
+        self.central_widget_layout.setContentsMargins(0, 0, 0, 0)
+        self.central_widget_layout.setObjectName("central_widget_layout")
+
+        # sidebar_frame
         self.sidebar_frame = QtWidgets.QFrame(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sidebar_frame.sizePolicy().hasHeightForWidth())
         self.sidebar_frame.setSizePolicy(sizePolicy)
-        self.sidebar_frame.setMinimumSize(QtCore.QSize(180, 720))
+        self.sidebar_frame.setMinimumSize(QtCore.QSize(180, 900))
         self.sidebar_frame.setMaximumSize(QtCore.QSize(180, 16777215))
         self.sidebar_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.sidebar_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.sidebar_frame.setObjectName("sidebar_frame")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.sidebar_frame)
-        self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
-        self.verticalLayout.setObjectName("verticalLayout")
 
-        # MainWindow\centralwidget\sidebar_frame\company_name
+        # sidebar_frame_layout
+        self.sidebar_frame_layout = QtWidgets.QVBoxLayout(self.sidebar_frame)
+        self.sidebar_frame_layout.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
+        self.sidebar_frame_layout.setObjectName("sidebar_frame_layout")
+
+        # company name
         self.company_name = QtWidgets.QLabel(self.sidebar_frame)
         self.company_name.setObjectName("company_name")
-        self.verticalLayout.addWidget(self.company_name)
+        self.sidebar_frame_layout.addWidget(self.company_name)
 
-        # MainWindow\centralwidget\sidebar_frame\app_name
+        # app_name
         self.app_name = QtWidgets.QLabel(self.sidebar_frame)
         self.app_name.setObjectName("app_name")
-        self.verticalLayout.addWidget(self.app_name)
+        self.sidebar_frame_layout.addWidget(self.app_name)
 
-        # MainWindow\centralwidget\sidebar_frame\sidebar_spacer
+        # spacerItem (sidebar spacer)
         spacerItem = QtWidgets.QSpacerItem(20, 15, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.verticalLayout.addItem(spacerItem)
+        self.sidebar_frame_layout.addItem(spacerItem)
 
-        # MainWindow\centralwidget\sidebar_frame\image_capture_button
+        # image_capture_button
         self.image_capture_button = QtWidgets.QPushButton(self.sidebar_frame)
         self.image_capture_button.setMinimumSize(QtCore.QSize(0, 40))
         self.image_capture_button.setObjectName("image_capture_button")
-        self.verticalLayout.addWidget(self.image_capture_button)
+        self.sidebar_frame_layout.addWidget(self.image_capture_button)
 
-        # MainWindow\centralwidget\sidebar_frame\detection_button
+        # detection_button
         self.detection_button = QtWidgets.QPushButton(self.sidebar_frame)
         self.detection_button.setMinimumSize(QtCore.QSize(0, 40))
         self.detection_button.setObjectName("detection_button")
-        self.verticalLayout.addWidget(self.detection_button)
+        self.sidebar_frame_layout.addWidget(self.detection_button)
 
-        # MainWindow\centralwidget\sidebar_frame\generate_report_button
+        # generate_report_button
         self.generate_report_button = QtWidgets.QPushButton(self.sidebar_frame)
         self.generate_report_button.setMinimumSize(QtCore.QSize(0, 40))
         self.generate_report_button.setObjectName("generate_report_button")
-        self.verticalLayout.addWidget(self.generate_report_button)
+        self.sidebar_frame_layout.addWidget(self.generate_report_button)
 
-        # MainWindow\centralwidget\sidebar_frame\help_button
+        # help_button
         self.help_button = QtWidgets.QPushButton(self.sidebar_frame)
         self.help_button.setMinimumSize(QtCore.QSize(0, 40))
         self.help_button.setObjectName("help_button")
-        self.verticalLayout.addWidget(self.help_button)
+        self.sidebar_frame_layout.addWidget(self.help_button)
 
-        # MainWindow\centralwidget\sidebar_frame\sidebar_spacer
+        # spacerItem1 (another sidebar spacer)
         spacerItem1 = QtWidgets.QSpacerItem(20, 443, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem1)
+        self.sidebar_frame_layout.addItem(spacerItem1)
 
         # add sidebar to centralwidget grid layout
-        self.gridLayout.addWidget(self.sidebar_frame, 0, 0, 1, 1)
+        self.central_widget_layout.addWidget(self.sidebar_frame, 0, 0, 1, 1)
 
-        # MainWindow\centralwidget\stackedWidget
+        # stackedWidget
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.stackedWidget.sizePolicy().hasHeightForWidth())
+        self.stackedWidget.setSizePolicy(sizePolicy)
+        self.stackedWidget.setMinimumSize(QtCore.QSize(1420, 890))
         self.stackedWidget.setObjectName("stackedWidget")
 
-        # MainWindow\centralwidget\stackedWidget\image_capture_page
+        # build image_capture_page
         self.image_capture_page = ImageCaptureWidget()
         # add image_capture_page to stackedWidget
         self.stackedWidget.addWidget(self.image_capture_page)
 
-        # MainWindow\centralwidget\stackedWidget\detection_page (includes layout)
+        # build detection_page
         self.detection_page = DetectionWidget()
         # add detection_page to stackedWidget
         self.stackedWidget.addWidget(self.detection_page)
 
-        # MainWindow\centralwidget\stackedWidget\generate_report_page (includes layout)
+        # build generate_report_page
         self.generate_report_page = ReportWidget()
         # add generate_report_page to stackedWidget
         self.stackedWidget.addWidget(self.generate_report_page)
 
-        # MainWindow\centralwidget\stackedWidget\help_page (includes layout)
+        # build help_page
         self.help_page = HelpWidget()
         # add help_page to stackedWidget
         self.stackedWidget.addWidget(self.help_page)
-        self.gridLayout.addWidget(self.stackedWidget, 0, 1, 1, 1)
+
+        # add stacked widget to central widget layout
+        self.central_widget_layout.addWidget(self.stackedWidget, 0, 1, 1, 1)
 
         # set central widget
         MainWindow.setCentralWidget(self.centralwidget)
+
         # translate GUI
         self.retranslateUi(MainWindow)
+
+        # connect pyqt signals and slots
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
         # set initial stackedWidget window
         self.stackedWidget.setCurrentIndex(0)
 
@@ -144,6 +170,10 @@ class Ui_MainWindow(object):
         self.image_capture_page.end_feed_btn.clicked.connect(self.stop_video)
         self.image_capture_page.capture_image_button.clicked.connect(self.capture_frame)
 
+        # invoke qr/barcode detection function
+        self.detection_page.matrix_recognition_button.clicked.connect(lambda: self.qr_barcode_detection(1))
+        self.detection_page.barcode_recognition_button.clicked.connect(lambda: self.qr_barcode_detection(0))
+
     def start_video(self):
         # instantiate thread
         if self.video_thread is None or not self.video_thread.isRunning():
@@ -162,7 +192,7 @@ class Ui_MainWindow(object):
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         flipImage = cv2.flip(image, 1)
         convertToQt = QImage(flipImage.data, flipImage.shape[1], flipImage.shape[0], QImage.Format_RGB888)
-        pic = convertToQt.scaled(1280, 720, Qt.KeepAspectRatio)
+        pic = convertToQt.scaled(640, 480, Qt.KeepAspectRatio)
         self.image_capture_page.video_frame_label.setPixmap(QPixmap.fromImage(pic))
 
     def video_finished(self):
@@ -207,14 +237,59 @@ class Ui_MainWindow(object):
         no_image_warning.setIcon(QMessageBox.Critical)
         no_image_warning.setStandardButtons(QMessageBox.Ok)
 
+        wrong_ext_warning = QMessageBox(MainWindow)
+        wrong_ext_warning.setWindowTitle('File Extension Error')
+        wrong_ext_warning.setText('Please check that you have selected the right files for detection.')
+        wrong_ext_warning.setIcon(QMessageBox.Critical)
+        wrong_ext_warning.setStandardButtons(QMessageBox.Ok)
+
         # check for existing image paths
         qr = self.image_capture_page.qr_path.text()
         barcode = self.image_capture_page.barcode_path.text()
         if os.path.exists(qr) and os.path.exists(barcode):
-            self.stackedWidget.setCurrentWidget(self.detection_page)
+            qr_name, qr_ext = os.path.splitext(qr)
+            bar_name, bar_ext = os.path.splitext(barcode)
+            img_ext = ['.png', '.jpg', '.jpeg']
+            if qr_ext.lower() in img_ext and bar_ext.lower() in img_ext:
+                self.update_mobo_image(qr, self.detection_page.chosen_image_label)
+                self.stackedWidget.setCurrentWidget(self.detection_page)
+            else:
+                wrong_ext_warning.exec_()
         else:
             no_image_warning.exec_()
             pass
+
+
+    def update_mobo_image(self, mobo_image, label):
+        img = cv2.imread(mobo_image)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.resize(img, (640, 360))
+
+        height, width, channel = img.shape
+        bytes_per_line = 3 * width
+        q_image = QImage(img.data, width, height, bytes_per_line, QImage.Format_RGB888)
+        label.setPixmap(QPixmap.fromImage(q_image))
+
+    def qr_barcode_detection(self, is_qr_detection):
+        success = None
+        code = None
+        qr_img_path = self.image_capture_page.qr_path.text()
+        barcode_img_path = self.image_capture_page.barcode_path.text()
+        # IMPORTANT: check whether model names and/or paths have been changed
+        qr_model_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'best.pt')
+        barcode_model_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'best_Barcode.pt')
+        if os.path.exists(qr_model_path) and os.path.exists(barcode_model_path):
+            # run qr detection
+            if is_qr_detection:
+                success, code = dp.decode_main(qr_model_path, qr_img_path, True)
+            # run barcode detection
+            else:
+                success, code = dp.decode_main(barcode_model_path, barcode_img_path, False)
+            if success:
+                self.detection_page.result_ppid.setText(code)
+        # fail-safe for misplaced model files
+        else:
+            print('The Detection models are misplaced or missing!')
 
     def restart(self):
 
@@ -237,7 +312,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SMS Demo Gui V10"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SMS Demo Gui V11"))
         self.company_name.setText(_translate("MainWindow", "SMS InfoComm"))
         self.app_name.setText(_translate("MainWindow", "Motherboard Inspection"))
         self.image_capture_button.setText(_translate("MainWindow", "Image Capture"))
@@ -248,8 +323,6 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
-
-    faulthandler.enable()
 
     app = QtWidgets.QApplication(sys.argv)
 

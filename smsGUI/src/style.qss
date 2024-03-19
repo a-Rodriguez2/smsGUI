@@ -23,9 +23,13 @@
     color: rgba(172,177,187,255);
 }
 
-#save_as_button, #save_button,
-#save_radio_button, #save_as_radio_button,
 #result_ppid {
+    font: 12pt "Segoe UI";
+    color: rgba(172,177,187,255);
+}
+
+#save_as_button, #save_button,
+#save_radio_button, #save_as_radio_button {
     font: 10pt "Segoe UI";
     color: rgba(172,177,187,255);
 }
@@ -62,11 +66,6 @@
     background-color: rgba(0,121,213,255);
     color: white;
     border: 2px solid white;
-}
-
-#result_image_frame,
-#chosen_image_frame, #reference_image_frame {
-    background-color: rgba(172,177,187,255);
 }
 
 #video_frame_label, #result_image_label,
