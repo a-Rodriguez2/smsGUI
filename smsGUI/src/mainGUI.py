@@ -9,6 +9,9 @@ from pages.Detection import DetectionWidget
 from pages.Report import ReportWidget
 from pages.Help import HelpWidget
 from pages.VideoCapture import VideoThread
+from pages.ImageComparison import align_images
+from pages.ImageComparison import highlight_differences
+from pages.ImageComparison import compare_images
 import pages.decodePic as dp
 
 
@@ -173,6 +176,10 @@ class Ui_MainWindow(object):
         # invoke qr/barcode detection function
         self.detection_page.matrix_recognition_button.clicked.connect(lambda: self.qr_barcode_detection(1))
         self.detection_page.barcode_recognition_button.clicked.connect(lambda: self.qr_barcode_detection(0))
+        self.code = None
+
+        # invoke the image comparison function
+        self.detection_page.run_comparison_button.clicked.connect(lambda: self.image_comparison())
 
     def start_video(self):
         # instantiate thread
@@ -245,7 +252,9 @@ class Ui_MainWindow(object):
 
         # check for existing image paths
         qr = self.image_capture_page.qr_path.text()
+        print(qr)
         barcode = self.image_capture_page.barcode_path.text()
+       
         if os.path.exists(qr) and os.path.exists(barcode):
             qr_name, qr_ext = os.path.splitext(qr)
             bar_name, bar_ext = os.path.splitext(barcode)
@@ -272,7 +281,7 @@ class Ui_MainWindow(object):
 
     def qr_barcode_detection(self, is_qr_detection):
         success = None
-        code = None
+        self.code = None
         qr_img_path = self.image_capture_page.qr_path.text()
         barcode_img_path = self.image_capture_page.barcode_path.text()
         # IMPORTANT: check whether model names and/or paths have been changed
@@ -281,15 +290,40 @@ class Ui_MainWindow(object):
         if os.path.exists(qr_model_path) and os.path.exists(barcode_model_path):
             # run qr detection
             if is_qr_detection:
-                success, code = dp.decode_main(qr_model_path, qr_img_path, True)
+                success, self.code = dp.decode_main(qr_model_path, qr_img_path, True)
             # run barcode detection
             else:
-                success, code = dp.decode_main(barcode_model_path, barcode_img_path, False)
+                success, self.code = dp.decode_main(barcode_model_path, barcode_img_path, False)
             if success:
-                self.detection_page.result_ppid.setText(code)
+                self.detection_page.result_ppid.setText(self.code)
+                # Send the code to the image comparison function
+
         # fail-safe for misplaced model files
         else:
             print('The Detection models are misplaced or missing!')
+    
+    def image_comparison(self):
+        # Finds the location of the Golden Image
+        image_folder = "MotherBoard Images"
+        golden_subfolder = "Golden Images"
+        golden_image_filename = "golden.png"
+        golden_image_path = os.path.join(image_folder, golden_subfolder, golden_image_filename)
+    
+        # Finds the location of the Defected Image
+        defected_subfolder = "Defect Images"
+        defected_image_filename = str(self.code + ".png")
+        defected_image_path = os.path.join(image_folder, defected_subfolder, defected_image_filename)
+
+        # Compare the image to the golden image
+        compare_images(defected_image_path, golden_image_path, align=True, sensitivity_threshold=40, blur_value=(7, 7))
+
+        # Output for the image
+        outputImage = "highlighted_output.jpg"
+        
+        # Update the Reference Frame and Comparison Frame
+        self.update_mobo_image(golden_image_path, self.detection_page.reference_image_label)
+        self.update_mobo_image(outputImage, self.detection_page.result_image_label)
+
 
     def restart(self):
 
@@ -330,6 +364,8 @@ if __name__ == "__main__":
     with open("style.qss") as f:
         style_str = f.read()
     app.setStyleSheet(style_str)
+
+    
 
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
