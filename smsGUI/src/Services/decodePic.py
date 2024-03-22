@@ -21,7 +21,7 @@ def decode_main(model_path: str, img_path: str, is_qr_detection: bool):
         label = result.names[class_idx]
 
         # model identifies QR/barcode label, crop it out and create a new image
-        if label == '2DMatrix':
+        if label == '2DMatrix' or label == 'PPID':
 
             confidence = box.conf.item()
             if confidence > highest_confidence:
