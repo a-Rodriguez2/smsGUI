@@ -4,13 +4,14 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import *
-from smsGUI.src.pages.ImageCapture import ImageCaptureWidget
+from pages.ImageCapture import ImageCaptureWidget
 from pages.Detection import DetectionWidget
 from pages.Report import ReportWidget
 from pages.Help import HelpWidget
-from smsGUI.src.Services.VideoCapture import VideoThread
-from smsGUI.src.Services.ImageComparison import compare_images
-import smsGUI.src.Services.decodePic as dp
+from Services.VideoCapture import VideoThread
+from Services.ImageComparison import compare_images
+from Services.report_generation import create_pdf_with_image
+import Services.decodePic as dp
 
 
 class Ui_MainWindow(object):
@@ -19,7 +20,8 @@ class Ui_MainWindow(object):
         # MainWindow
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1600, 900)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
@@ -28,7 +30,8 @@ class Ui_MainWindow(object):
 
         # centralwidget
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
@@ -106,7 +109,8 @@ class Ui_MainWindow(object):
 
         # stackedWidget
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.stackedWidget.sizePolicy().hasHeightForWidth())
@@ -175,9 +179,10 @@ class Ui_MainWindow(object):
         self.detection_page.matrix_recognition_button.clicked.connect(lambda: self.qr_barcode_detection(1))
         self.detection_page.barcode_recognition_button.clicked.connect(lambda: self.qr_barcode_detection(0))
         self.code = None
-
         # invoke the image comparison function
         self.detection_page.run_comparison_button.clicked.connect(lambda: self.image_comparison())
+        # invoke the report generation function
+        self.generate_report_page.generate_report_button_2.clicked.connect(lambda: self.gen_report())
 
     def start_video(self):
         # instantiate thread
@@ -220,14 +225,20 @@ class Ui_MainWindow(object):
             self.image_capture_page.capture_image_button.setDisabled(True)
         cap.release()
 
-    # checks whether a directory for captured images already exists before making one
+    # checks whether a directory for captured images and reports already exist before making one
     @staticmethod
     def image_folder():
 
         image_folder_name = 'GUI Images'
-        image_folder_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), image_folder_name)
+        report_folder_name = "Reports"
+        image_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), image_folder_name)
+        report_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), report_folder_name)
         try:
-            os.mkdir(image_folder_path)
+            os.mkdir(image_folder)
+        except FileExistsError:
+            pass
+        try:
+            os.mkdir(report_folder)
         except FileExistsError:
             pass
 
@@ -252,7 +263,7 @@ class Ui_MainWindow(object):
         qr = self.image_capture_page.qr_path.text()
         print(qr)
         barcode = self.image_capture_page.barcode_path.text()
-       
+
         if os.path.exists(qr) and os.path.exists(barcode):
             qr_name, qr_ext = os.path.splitext(qr)
             bar_name, bar_ext = os.path.splitext(barcode)
@@ -265,7 +276,6 @@ class Ui_MainWindow(object):
         else:
             no_image_warning.exec_()
             pass
-
 
     def update_mobo_image(self, mobo_image, label):
         img = cv2.imread(mobo_image)
@@ -299,14 +309,14 @@ class Ui_MainWindow(object):
         # fail-safe for misplaced model files
         else:
             print('The Detection models are misplaced or missing!')
-    
+
     def image_comparison(self):
         # Finds the location of the Golden Image
         image_folder = "MotherBoard Images"
         golden_subfolder = "Golden Images"
         golden_image_filename = "golden.png"
         golden_image_path = os.path.join(image_folder, golden_subfolder, golden_image_filename)
-    
+
         # Finds the location of the Defected Image
         defected_subfolder = "Defect Images"
         defected_image_filename = str(self.code + ".png")
@@ -317,11 +327,22 @@ class Ui_MainWindow(object):
 
         # Output for the image
         outputImage = "highlighted_output.jpg"
-        
+
         # Update the Reference Frame and Comparison Frame
         self.update_mobo_image(golden_image_path, self.detection_page.reference_image_label)
         self.update_mobo_image(outputImage, self.detection_page.result_image_label)
 
+    # NOTE: UPDATE ONCE IMAGE PATHS ARE NO LONGER HARD-CODED
+    def gen_report(self):
+        # first, check whether image paths even exist
+        golden_image = 'MotherBoard Images\\Golden Images\\golden.png'
+        defect_image = f'MotherBoard Images\\Defect Images\\{self.code}.png'
+        comparison_image = 'highlighted_output.jpg'
+
+        if os.path.exists(golden_image) and os.path.exists(defect_image) and os.path.exists(comparison_image):
+            create_pdf_with_image(comparison_image, defect_image, golden_image)
+        else:
+            pass
 
     def restart(self):
 
@@ -339,6 +360,15 @@ class Ui_MainWindow(object):
             self.stackedWidget.setCurrentWidget(self.image_capture_page)
             self.image_capture_page.qr_path.setText('No Image Selected!')
             self.image_capture_page.barcode_path.setText('No Image Selected!')
+            # delete comparison results to prevent report invalid report generation
+            self.detection_page.result_image_label.setText('- Result Image Frame -')
+            self.detection_page.result_image_label.update()
+            self.detection_page.reference_image_label.setText('- Reference Image Frame -')
+            self.detection_page.reference_image_label.update()
+            try:
+                os.remove('highlighted_output.jpg')
+            except FileNotFoundError:
+                pass
         else:
             pass
 
@@ -362,8 +392,6 @@ if __name__ == "__main__":
     with open("style.qss") as f:
         style_str = f.read()
     app.setStyleSheet(style_str)
-
-    
 
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
