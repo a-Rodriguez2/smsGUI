@@ -4,15 +4,13 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import *
-from pages.ImageCapture import ImageCaptureWidget
+from smsGUI.src.pages.ImageCapture import ImageCaptureWidget
 from pages.Detection import DetectionWidget
 from pages.Report import ReportWidget
 from pages.Help import HelpWidget
-from pages.VideoCapture import VideoThread
-from pages.ImageComparison import align_images
-from pages.ImageComparison import highlight_differences
-from pages.ImageComparison import compare_images
-import pages.decodePic as dp
+from smsGUI.src.Services.VideoCapture import VideoThread
+from smsGUI.src.Services.ImageComparison import compare_images
+import smsGUI.src.Services.decodePic as dp
 
 
 class Ui_MainWindow(object):
