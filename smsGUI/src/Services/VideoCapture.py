@@ -16,6 +16,11 @@ class VideoThread(QThread):
         # boolean for starting and stopping thread
         self.run_flag = True
         self.cap = cv2.VideoCapture(0)
+        # comment-out to manipulate camera settings
+        # self.cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+        # self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,3000)
+        # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,4000)
+        # self.cap.set(28,72)
 
     def run(self):
         # while allowed to run, read video frame and emit signal to update label
