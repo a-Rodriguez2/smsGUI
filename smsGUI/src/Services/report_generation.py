@@ -5,7 +5,7 @@ from reportlab.pdfgen import canvas
 from datetime import datetime
 
 
-def create_pdf_with_image(image_path1, image_path2, image_path3):
+def create_pdf_with_image(image_path1, image_path2):
     """
 
     :param image_path1: result of image comparison
@@ -66,7 +66,7 @@ def create_pdf_with_image(image_path1, image_path2, image_path3):
     c.drawString(x_coordinate4, 280, "Comparison Result")
 
     c.drawImage(image_path2, image_x_coordinate, 80, width=image_width2, height=image_width2 * .75)
-    c.drawImage(image_path3, (image_x_coordinate * 5) - 20, 80, width=image_width2, height=image_width2 * .75)
+    # c.drawImage(image_path3, (image_x_coordinate * 5) - 20, 80, width=image_width2, height=image_width2 * .75)
 
     c.drawString(image_x_coordinate * 2 + 12, 65, "Unit Under Test")
     c.drawString(((image_x_coordinate * 5) - 20) + 73, 65, "Reference Image")

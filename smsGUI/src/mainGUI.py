@@ -340,7 +340,7 @@ class Ui_MainWindow(object):
         comparison_image = 'highlighted_output.jpg'
 
         if os.path.exists(golden_image) and os.path.exists(defect_image) and os.path.exists(comparison_image):
-            create_pdf_with_image(comparison_image, defect_image, golden_image)
+            create_pdf_with_image(comparison_image, defect_image)
         else:
             pass
 
