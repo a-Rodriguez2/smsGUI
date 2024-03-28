@@ -229,7 +229,7 @@ class Ui_MainWindow(object):
     @staticmethod
     def image_folder():
 
-        image_folder_name = 'GUI Images'
+        image_folder_name = 'MotherBoard Images'
         report_folder_name = "Reports"
         image_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), image_folder_name)
         report_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), report_folder_name)
@@ -340,7 +340,7 @@ class Ui_MainWindow(object):
         comparison_image = 'highlighted_output.jpg'
 
         if os.path.exists(golden_image) and os.path.exists(defect_image) and os.path.exists(comparison_image):
-            create_pdf_with_image(comparison_image, defect_image, golden_image)
+            create_pdf_with_image(comparison_image, defect_image)
         else:
             pass
 
