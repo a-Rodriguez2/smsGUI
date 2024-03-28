@@ -229,7 +229,7 @@ class Ui_MainWindow(object):
     @staticmethod
     def image_folder():
 
-        image_folder_name = 'MotherBoard Images'
+        image_folder_name = 'GUI Images'
         report_folder_name = "Reports"
         image_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), image_folder_name)
         report_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), report_folder_name)
