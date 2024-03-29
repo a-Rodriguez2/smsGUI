@@ -316,6 +316,12 @@ class Ui_MainWindow(object):
         golden_subfolder = "Golden Images"
         golden_image_filename = "golden.png"
         golden_image_path = os.path.join(image_folder, golden_subfolder, golden_image_filename)
+        if not os.path.exists(golden_image_path):
+            no_golden_image = QMessageBox(MainWindow)
+            no_golden_image.setWindowTitle('Golden Image Error')
+            no_golden_image.setText('Path to Golden Image does not exist')
+            no_golden_image.setIcon(QMessageBox.Critical)
+            no_golden_image.setStandardButtons(QMessageBox.Ok)
 
         # Finds the location of the Defected Image
         defected_subfolder = "Defect Images"
