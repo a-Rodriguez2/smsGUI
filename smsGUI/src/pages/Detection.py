@@ -254,6 +254,8 @@ class DetectionWidget(QtWidgets.QWidget):
         # add reference_layout to detection_page_layout
         self.detection_page_layout.addLayout(self.reference_layout, 1, 0, 1, 1)
 
+        # initially disable 'open file location' buttons until
+
         # translate detection_page
         self.translatePage()
 
