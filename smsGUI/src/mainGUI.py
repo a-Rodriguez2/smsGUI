@@ -314,7 +314,7 @@ class Ui_MainWindow(object):
         # Finds the location of the Golden Image
         image_folder = "MotherBoard Images"
         golden_subfolder = "Golden Images"
-        golden_image_filename = "golden.png"
+        golden_image_filename = "golden-" + str(self.code) + ".png"
         golden_image_path = os.path.join(image_folder, golden_subfolder, golden_image_filename)
         if not os.path.exists(golden_image_path):
             no_golden_image = QMessageBox(MainWindow)
