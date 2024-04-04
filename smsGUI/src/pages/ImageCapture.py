@@ -108,6 +108,11 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.image_manip_layout.setContentsMargins(10, 10, 10, 10)
         self.image_manip_layout.setObjectName("image_manip_layout")
 
+        # image_manip_layout\show_manip_settings
+        self.show_manip_settings = QtWidgets.QCheckBox(self)
+        self.show_manip_settings.setObjectName("show_manip_settings")
+        self.image_manip_layout.addWidget(self.show_manip_settings, 0, 1, 1, 1)
+
         # image_manip_layout\zoom_label
         self.zoom_label = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -119,7 +124,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.zoom_label.setMaximumSize(QtCore.QSize(16777215, 50))
         self.zoom_label.setAlignment(QtCore.Qt.AlignCenter)
         self.zoom_label.setObjectName("zoom_label")
-        self.image_manip_layout.addWidget(self.zoom_label, 0, 1, 1, 1)
+        self.image_manip_layout.addWidget(self.zoom_label, 1, 1, 1, 1)
 
         # image_manip_layout\zoom_slider
         self.zoom_slider = QtWidgets.QSlider(self)
@@ -133,11 +138,11 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.zoom_slider.setSliderPosition(50)
         self.zoom_slider.setOrientation(QtCore.Qt.Horizontal)
         self.zoom_slider.setObjectName("zoom_slider")
-        self.image_manip_layout.addWidget(self.zoom_slider, 1, 1, 1, 1)
+        self.image_manip_layout.addWidget(self.zoom_slider, 2, 1, 1, 1)
 
         # image_manip_layout\spacerItem2 (image manip spacer)
         spacerItem2 = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.image_manip_layout.addItem(spacerItem2, 2, 0, 1, 1)
+        self.image_manip_layout.addItem(spacerItem2, 3, 0, 1, 1)
 
         # image_manip_layout\brightness_label
         self.brightness_label = QtWidgets.QLabel(self)
@@ -150,11 +155,11 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.brightness_label.setMaximumSize(QtCore.QSize(16777215, 50))
         self.brightness_label.setAlignment(QtCore.Qt.AlignCenter)
         self.brightness_label.setObjectName("brightness_label")
-        self.image_manip_layout.addWidget(self.brightness_label, 2, 1, 1, 1)
+        self.image_manip_layout.addWidget(self.brightness_label, 3, 1, 1, 1)
 
         # image_manip_layout\image_manip_spacer
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.image_manip_layout.addItem(spacerItem3, 2, 2, 1, 1)
+        self.image_manip_layout.addItem(spacerItem3, 3, 2, 1, 1)
 
         # image_manip_layout\brightness_slider
         self.brightness_slider = QtWidgets.QSlider(self)
@@ -167,7 +172,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.brightness_slider.setSliderPosition(50)
         self.brightness_slider.setOrientation(QtCore.Qt.Horizontal)
         self.brightness_slider.setObjectName("brightness_slider")
-        self.image_manip_layout.addWidget(self.brightness_slider, 3, 1, 1, 1)
+        self.image_manip_layout.addWidget(self.brightness_slider, 4, 1, 1, 1)
 
         # image_manip_layout\contrast_label
         self.contrast_label = QtWidgets.QLabel(self)
@@ -180,7 +185,7 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.contrast_label.setMaximumSize(QtCore.QSize(16777215, 50))
         self.contrast_label.setAlignment(QtCore.Qt.AlignCenter)
         self.contrast_label.setObjectName("contrast_label")
-        self.image_manip_layout.addWidget(self.contrast_label, 4, 1, 1, 1)
+        self.image_manip_layout.addWidget(self.contrast_label, 5, 1, 1, 1)
 
         # image_manip_layout\contrast_slider
         self.contrast_slider = QtWidgets.QSlider(self)
@@ -193,7 +198,15 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.contrast_slider.setSliderPosition(50)
         self.contrast_slider.setOrientation(QtCore.Qt.Horizontal)
         self.contrast_slider.setObjectName("contrast_slider")
-        self.image_manip_layout.addWidget(self.contrast_slider, 5, 1, 1, 1)
+        self.image_manip_layout.addWidget(self.contrast_slider, 6, 1, 1, 1)
+
+        # initially set image manip settings to not visible
+        self.zoom_label.setVisible(False)
+        self.zoom_slider.setVisible(False)
+        self.brightness_label.setVisible(False)
+        self.brightness_slider.setVisible(False)
+        self.contrast_label.setVisible(False)
+        self.contrast_slider.setVisible(False)
 
         # add image_manip_layout to image_capture_page_layout
         self.image_capture_page_layout.addLayout(self.image_manip_layout, 0, 1, 1, 1)
@@ -282,6 +295,24 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         # link buttons
         self.select_qr_button.clicked.connect(lambda: self.open_file_dialog(0))
         self.select_barcode_button.clicked.connect(lambda: self.open_file_dialog(1))
+        self.show_manip_settings.stateChanged.connect(self.manip_settings)
+
+    # script that shows manipulation settings for the camera feed
+    def manip_settings(self, state):
+        if state == 2:
+            self.zoom_label.setVisible(True)
+            self.zoom_slider.setVisible(True)
+            self.brightness_label.setVisible(True)
+            self.brightness_slider.setVisible(True)
+            self.contrast_label.setVisible(True)
+            self.contrast_slider.setVisible(True)
+        else:
+            self.zoom_label.setVisible(False)
+            self.zoom_slider.setVisible(False)
+            self.brightness_label.setVisible(False)
+            self.brightness_slider.setVisible(False)
+            self.contrast_label.setVisible(False)
+            self.contrast_slider.setVisible(False)
 
     # script that updates the qr/barcode path labels with actual image paths
     def open_file_dialog(self, image_type):
@@ -322,3 +353,4 @@ class ImageCaptureWidget(QtWidgets.QWidget):
         self.barcode_path.setText(_translate("MainWindow", "No Image Selected!"))
         self.start_feed_btn.setText(_translate("MainWindow", "Start Feed"))
         self.end_feed_btn.setText(_translate("MainWindow", "End Feed"))
+        self.show_manip_settings.setText(_translate("MainWindow", "Show Image Manipulation Settings"))

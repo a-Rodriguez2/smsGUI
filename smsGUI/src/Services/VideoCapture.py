@@ -49,7 +49,7 @@ class VideoThread(QThread):
                 current_date = current_datetime.strftime('%m-%d-%Y')
                 current_time = current_datetime.strftime('%H-%M-%S')
                 image_name = f'capture_date_{current_date}_time_{current_time}.png'
-                image_path = os.path.join('GUI Images', image_name)
+                image_path = os.path.join('Captured Images', image_name)
                 cv2.imwrite(image_path, frame)
                 QMessageBox.information(None, 'Success', f'Frame captured and saved as {image_name} successfully!')
 

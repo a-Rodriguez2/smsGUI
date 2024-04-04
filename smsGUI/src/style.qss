@@ -78,7 +78,8 @@
 
 #zoom_label, #brightness_label,
 #contrast_label, #result_mobo_label,
-#chosen_mobo_label, #reference_mobo_label {
+#chosen_mobo_label, #reference_mobo_label,
+#show_manip_settings {
     font: 75 12pt "Segoe UI";
     font-weight: bold;
     color: rgba(172,177,187,255);

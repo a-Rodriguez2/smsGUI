@@ -183,6 +183,13 @@ class Ui_MainWindow(object):
         self.detection_page.run_comparison_button.clicked.connect(lambda: self.image_comparison())
         # invoke the report generation function
         self.generate_report_page.generate_report_button_2.clicked.connect(lambda: self.gen_report())
+        # invoke manual ppid enter
+        self.detection_page.ppid_user_save.clicked.connect(self.manual_ppid)
+        # invoke open file location
+        self.detection_page.open_chosen_mobo.clicked.connect(lambda: self.open_file_location(0))
+        self.detection_page.open_reference_mobo.clicked.connect(lambda: self.open_file_location(1))
+        self.detection_page.open_result_mobo.clicked.connect(lambda: self.open_file_location(2))
+        self.generate_report_page.preview_report_button.clicked.connect(lambda: self.open_file_location(3))
 
     def start_video(self):
         # instantiate thread
@@ -229,7 +236,7 @@ class Ui_MainWindow(object):
     @staticmethod
     def image_folder():
 
-        image_folder_name = 'GUI Images'
+        image_folder_name = 'Captured Images'
         report_folder_name = "Reports"
         image_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), image_folder_name)
         report_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), report_folder_name)
@@ -261,7 +268,7 @@ class Ui_MainWindow(object):
 
         # check for existing image paths
         qr = self.image_capture_page.qr_path.text()
-        print(qr)
+        # print(qr)
         barcode = self.image_capture_page.barcode_path.text()
 
         if os.path.exists(qr) and os.path.exists(barcode):
@@ -276,6 +283,16 @@ class Ui_MainWindow(object):
         else:
             no_image_warning.exec_()
             pass
+
+    # for user to manually enter ppid if qr/barcode fails
+    def manual_ppid(self):
+        ppid = self.detection_page.ppid_user_edit.text()
+        # check if written ppid exists
+        if ppid != '':
+            self.detection_page.result_ppid.setText(ppid)
+            self.code = ppid
+        else:
+            self.detection_page.result_ppid.setText('None')
 
     def update_mobo_image(self, mobo_image, label):
         img = cv2.imread(mobo_image)
@@ -311,42 +328,73 @@ class Ui_MainWindow(object):
             print('The Detection models are misplaced or missing!')
 
     def image_comparison(self):
-        # Finds the location of the Golden Image
+        # Finds locations of the golden and defected images
+        # NOTE: CHANGE FOLDER NAMES IF THEY ARE UPDATED AT ANY TIME
         image_folder = "MotherBoard Images"
         golden_subfolder = "Golden Images"
-        golden_image_filename = "golden-" + str(self.code) + ".png"
-        golden_image_path = os.path.join(image_folder, golden_subfolder, golden_image_filename)
-        if not os.path.exists(golden_image_path):
-            no_golden_image = QMessageBox(MainWindow)
-            no_golden_image.setWindowTitle('Golden Image Error')
-            no_golden_image.setText('Path to Golden Image does not exist')
-            no_golden_image.setIcon(QMessageBox.Critical)
-            no_golden_image.setStandardButtons(QMessageBox.Ok)
-
-        # Finds the location of the Defected Image
+        golden_image_filename = "golden.png"
         defected_subfolder = "Defect Images"
-        defected_image_filename = str(self.code + ".png")
-        defected_image_path = os.path.join(image_folder, defected_subfolder, defected_image_filename)
 
-        # Compare the image to the golden image
-        compare_images(defected_image_path, golden_image_path, align=True, sensitivity_threshold=40, blur_value=(7, 7))
+        if self.code is not None:
+            defected_image_filename = str(self.code + ".png")
 
-        # Output for the image
-        outputImage = "highlighted_output.jpg"
+            # create paths for golden and defected images. checks if paths exist
+            golden_image_path = os.path.join(image_folder, golden_subfolder, golden_image_filename)
+            defected_image_path = os.path.join(image_folder, defected_subfolder, defected_image_filename)
 
-        # Update the Reference Frame and Comparison Frame
-        self.update_mobo_image(golden_image_path, self.detection_page.reference_image_label)
-        self.update_mobo_image(outputImage, self.detection_page.result_image_label)
+            if os.path.exists(golden_image_path) and os.path.exists(defected_image_path):
+                # Compare the image to the golden image
+                compare_images(defected_image_path, golden_image_path, align=True, sensitivity_threshold=40,
+                               blur_value=(7, 7))
+
+                # Output for the image
+                outputImage = "comparison_result.jpg"
+
+                # Update the Reference Frame and Comparison Frame
+                self.update_mobo_image(golden_image_path, self.detection_page.reference_image_label)
+                self.update_mobo_image(outputImage, self.detection_page.result_image_label)
+            else:
+                no_image = QMessageBox(MainWindow)
+                no_image.setWindowTitle('Image Detection Error')
+                no_image.setText('Path to Golden and/or Defected Images do not exist!')
+                no_image.setIcon(QMessageBox.Critical)
+                no_image.setStandardButtons(QMessageBox.Ok)
+                no_image.show()
+        else:
+            no_ppid = QMessageBox(MainWindow)
+            no_ppid.setWindowTitle('PPID Error')
+            no_ppid.setText('PPID does not exist!')
+            no_ppid.setIcon(QMessageBox.Critical)
+            no_ppid.setStandardButtons(QMessageBox.Ok)
+            no_ppid.show()
+
+    # open directory of a particular file (decided by index argument) on file explorer
+    # index: chosen (0), reference (1), result (2)
+    def open_file_location(self, index):
+        main_folder = os.path.dirname(os.path.realpath(__file__))
+        if index == 0:
+            os.startfile('Captured Images')
+        elif index == 1:
+            os.startfile('MotherBoard Images\\Golden Images')
+        elif index == 2:
+            os.startfile(main_folder)
+        elif index == 3:
+            os.startfile('Reports')
 
     # NOTE: UPDATE ONCE IMAGE PATHS ARE NO LONGER HARD-CODED
     def gen_report(self):
         # first, check whether image paths even exist
         golden_image = 'MotherBoard Images\\Golden Images\\golden.png'
         defect_image = f'MotherBoard Images\\Defect Images\\{self.code}.png'
-        comparison_image = 'highlighted_output.jpg'
+        comparison_image = 'comparison_result.jpg'
 
         if os.path.exists(golden_image) and os.path.exists(defect_image) and os.path.exists(comparison_image):
-            create_pdf_with_image(comparison_image, defect_image)
+            # report 'save' operation
+            if self.generate_report_page.save_radio_button.isChecked():
+                create_pdf_with_image(comparison_image, defect_image, 1)
+            # report 'save as' operation
+            else:
+                create_pdf_with_image(comparison_image, defect_image, 0)
         else:
             pass
 
@@ -371,8 +419,10 @@ class Ui_MainWindow(object):
             self.detection_page.result_image_label.update()
             self.detection_page.reference_image_label.setText('- Reference Image Frame -')
             self.detection_page.reference_image_label.update()
+            self.detection_page.result_ppid.setText('None')
+            self.detection_page.result_ppid.update()
             try:
-                os.remove('highlighted_output.jpg')
+                os.remove('comparison_result.jpg')
             except FileNotFoundError:
                 pass
         else:
@@ -380,7 +430,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SMS Demo Gui V11"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SMS Demo Gui V12"))
         self.company_name.setText(_translate("MainWindow", "SMS InfoComm"))
         self.app_name.setText(_translate("MainWindow", "Motherboard Inspection"))
         self.image_capture_button.setText(_translate("MainWindow", "Image Capture"))
