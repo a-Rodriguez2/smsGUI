@@ -116,14 +116,14 @@ def highlight_differences(image1, image2, sensitivity_threshold=45, blur_value=(
     final_image = cv2.addWeighted(gray_image, 1, highlighted, 1, 0)
 
     # Save the final image with highlighted differences
-    cv2.imwrite('highlighted_output.jpg', final_image)
+    cv2.imwrite('comparison_result.jpg', final_image)
 
     # Uncomment below lines to display the image
     # cv2.imshow('Unique Highlighted Difference', final_image)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
 
-    return 'highlighted_output.jpg'
+    return 'comparison_result.jpg'
 
 
 def compare_images(image_path1, image_path2, align=False, sensitivity_threshold=45, blur_value=(21, 21)):

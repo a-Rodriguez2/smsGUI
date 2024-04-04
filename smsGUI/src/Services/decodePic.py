@@ -55,7 +55,8 @@ def decode_main(model_path: str, img_path: str, is_qr_detection: bool):
                             print(f"Decoded Matrix Code: {matrixCode}")
                             print(
                                 f"Rotation: {angle} degrees, Brightness: {beta}, Contrast: {alpha}, Sharpness: {sharpness}")
-                            cv2.imwrite(f'successful_decode_{angle}_{beta}_{alpha}_{sharpness}.png', modified_image)
+                            # comment-out to view successful decode
+                            # cv2.imwrite(f'successful_decode_{angle}_{beta}_{alpha}_{sharpness}.png', modified_image)
                             found = True
                             break  # Exit sharpness loop
                     if found:
