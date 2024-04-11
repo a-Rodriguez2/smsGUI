@@ -332,7 +332,7 @@ class Ui_MainWindow(object):
         # NOTE: CHANGE FOLDER NAMES IF THEY ARE UPDATED AT ANY TIME
         image_folder = "MotherBoard Images"
         golden_subfolder = "Golden Images"
-        golden_image_filename = "golden.png"
+        golden_image_filename = "golden-" + str(self.code) + ".png"
         defected_subfolder = "Defect Images"
 
         if self.code is not None:
@@ -384,17 +384,19 @@ class Ui_MainWindow(object):
     # NOTE: UPDATE ONCE IMAGE PATHS ARE NO LONGER HARD-CODED
     def gen_report(self):
         # first, check whether image paths even exist
-        golden_image = 'MotherBoard Images\\Golden Images\\golden.png'
         defect_image = f'MotherBoard Images\\Defect Images\\{self.code}.png'
         comparison_image = 'comparison_result.jpg'
 
-        if os.path.exists(golden_image) and os.path.exists(defect_image) and os.path.exists(comparison_image):
-            # report 'save' operation
+        if os.path.exists(defect_image) and os.path.exists(comparison_image):
             if self.generate_report_page.save_radio_button.isChecked():
-                create_pdf_with_image(comparison_image, defect_image, 1)
-            # report 'save as' operation
+                report_save = 1
             else:
-                create_pdf_with_image(comparison_image, defect_image, 0)
+                report_save = 0
+            create_pdf_with_image(comparison_image, defect_image, report_save, self.code,
+                                  self.generate_report_page.system_username_result.text(),
+                                  self.generate_report_page.name_result.text(),
+                                  self.generate_report_page.work_id_result.text(),
+                                  self.generate_report_page.station_number_result.text())
         else:
             pass
 
