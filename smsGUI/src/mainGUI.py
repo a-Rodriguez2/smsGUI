@@ -236,14 +236,14 @@ class Ui_MainWindow(object):
     @staticmethod
     def image_folder():
 
-        image_folder_name = 'Captured Images'
+        # image_folder_name = 'Captured Images'
         report_folder_name = "Reports"
-        image_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), image_folder_name)
+        # image_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), image_folder_name)
         report_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), report_folder_name)
-        try:
-            os.mkdir(image_folder)
-        except FileExistsError:
-            pass
+        # try:
+        #     os.mkdir(image_folder)
+        # except FileExistsError:
+        #     pass
         try:
             os.mkdir(report_folder)
         except FileExistsError:
@@ -321,7 +321,24 @@ class Ui_MainWindow(object):
                 success, self.code = dp.decode_main(barcode_model_path, barcode_img_path, False)
             if success:
                 self.detection_page.result_ppid.setText(self.code)
-                # Send the code to the image comparison function
+
+                # Directory containing the image files
+                directory = "MotherBoard Images/Defect Images"
+                print(directory)
+                files = os.listdir(directory)
+
+                # Filter out non-image files (optional)
+                image_files = [file for file in files if file.endswith((".png", ".jpg", ".jpeg"))]
+
+                # Get the most recent image file based on its modification time
+                most_recent_file = max(image_files, key=lambda x: os.path.getmtime(os.path.join(directory, x)))
+
+                # New name for the image file
+                new_name = str(self.code) + ".png"
+
+                # Rename the most recent image file
+                os.rename(os.path.join(directory, most_recent_file), os.path.join(directory, new_name))
+
 
         # fail-safe for misplaced model files
         else:
