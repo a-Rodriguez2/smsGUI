@@ -17,9 +17,9 @@ class VideoThread(QThread):
         self.run_flag = True
         self.cap = cv2.VideoCapture(0)
         # comment-out to manipulate camera settings
-        # self.cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
-        # self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,3000)
-        # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,4000)
+        self.cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,3000)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,4000)
         # self.cap.set(28,72)
 
     def run(self):
@@ -49,7 +49,7 @@ class VideoThread(QThread):
                 current_date = current_datetime.strftime('%m-%d-%Y')
                 current_time = current_datetime.strftime('%H-%M-%S')
                 image_name = f'capture_date_{current_date}_time_{current_time}.png'
-                image_path = os.path.join('Captured Images', image_name)
+                image_path = os.path.join('MotherBoard Images', 'Defect Images', image_name)
                 cv2.imwrite(image_path, frame)
                 QMessageBox.information(None, 'Success', f'Frame captured and saved as {image_name} successfully!')
 
