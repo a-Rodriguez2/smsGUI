@@ -101,13 +101,13 @@ def highlight_differences(image1, image2, sensitivity_threshold=45, blur_value=(
         diff2, sensitivity_threshold, 255, cv2.THRESH_BINARY)
 
     # Highlight differences in color (blue for image1, red for image2)
-    highlighted1 = cv2.merge([thresh_diff1, thresh_diff1, np.zeros_like(
-        thresh_diff1)])  # Blue-Green for unique in image1
+    # highlighted1 = cv2.merge([thresh_diff1, thresh_diff1, np.zeros_like(
+    #     thresh_diff1)])  # Blue-Green for unique in image1
     highlighted2 = cv2.merge([np.zeros_like(thresh_diff2), np.zeros_like(
         thresh_diff2), thresh_diff2])  # Red for unique in image2
 
     # Combine the highlighted images
-    highlighted = cv2.addWeighted(highlighted1, 1, highlighted2, 1, 0)
+    highlighted = cv2.addWeighted(highlighted2, 1, np.zeros_like(highlighted2), 1, 0)
 
     # Convert the first grayscale image to BGR for background
     gray_image = cv2.cvtColor(gray1, cv2.COLOR_GRAY2BGR)

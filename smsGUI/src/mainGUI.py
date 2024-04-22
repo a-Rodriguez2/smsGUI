@@ -361,6 +361,7 @@ class Ui_MainWindow(object):
 
             if os.path.exists(golden_image_path) and os.path.exists(defected_image_path):
                 # Compare the image to the golden image
+                print(defected_image_path, golden_image_path)
                 compare_images(defected_image_path, golden_image_path, align=True, sensitivity_threshold=40,
                                blur_value=(7, 7))
 
