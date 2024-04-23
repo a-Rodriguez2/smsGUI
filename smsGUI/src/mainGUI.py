@@ -336,8 +336,12 @@ class Ui_MainWindow(object):
                 # New name for the image file
                 new_name = str(self.code) + ".png"
 
-                # Rename the most recent image file
-                os.rename(os.path.join(directory, most_recent_file), os.path.join(directory, new_name))
+                if os.path.exists(os.path.join(directory, new_name)):
+                    # Rename the most recent image file
+                    os.rename(os.path.join(directory, most_recent_file), os.path.join(directory, new_name))
+                else:
+                    os.replace(os.path.join(directory, most_recent_file), os.path.join(directory, new_name))
+
 
 
         # fail-safe for misplaced model files
