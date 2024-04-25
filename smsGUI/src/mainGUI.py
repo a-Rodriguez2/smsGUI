@@ -1,5 +1,6 @@
 import cv2
 import os
+import send2trash
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QImage, QPixmap
@@ -318,21 +319,28 @@ class Ui_MainWindow(object):
 
                 # Directory containing the image files
                 directory = "MotherBoard Images/Defect Images"
-                print(directory)
                 files = os.listdir(directory)
 
-                # Filter out non-image files (optional)
-                image_files = [file for file in files if file.endswith((".png", ".jpg", ".jpeg"))]
-
                 # Get the most recent image file based on its modification time
-                most_recent_file = max(image_files, key=lambda x: os.path.getmtime(os.path.join(directory, x)))
+                most_recent_file = self.image_capture_page.qr_path.text()
+                filename = os.path.basename(most_recent_file)
+                print(filename)
 
                 # New name for the image file
                 new_name = str(self.code) + ".png"
-
+            
+                # If the file already exists
                 if os.path.exists(os.path.join(directory, new_name)):
-                    # Rename the most recent image file
-                    os.rename(os.path.join(directory, most_recent_file), os.path.join(directory, new_name))
+                    # If the picked file already has a ppid name, dont do anything
+                    if filename == new_name:
+                        # Dont do anything
+                        print("Same File")
+                    # If the file picked has a duplicate file already existing
+                    else:
+                        print("File name already exists. Moved existing file to recycle bin")
+                        send2trash.send2trash(os.path.join(directory, new_name))
+                        os.replace(os.path.join(directory, most_recent_file), os.path.join(directory, new_name))
+                # If the file doesnt exist
                 else:
                     os.replace(os.path.join(directory, most_recent_file), os.path.join(directory, new_name))
 
