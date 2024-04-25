@@ -10,17 +10,20 @@ class VideoThread(QThread):
     # signal to update video frame label
     update_pixmap_signal = pyqtSignal(numpy.ndarray)
     finished_signal = pyqtSignal()
+
     def __init__(self, parent=None):
         super().__init__(parent)
         # boolean for starting and stopping thread
         self.run_flag = True
+        focus_property_id = 28  # This ID may vary, you may need to change it
+
         # comment-out to manipulate camera settings
         self.cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,3000)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,4000)
-        self.cap.set(cv2.CAP_PROP_AUTOFOCUS, 0)
-        self.cap.set(28,int(22)) #sets focus manually
-        self.cap.set(cv2.CAP_PROP_EXPOSURE,0)
+        # self.cap.set(cv2.CAP_PROP_AUTOFOCUS,1)
+        self.cap.set(cv2.CAP_PROP_AUTO_EXPOSURE,0)
+        self.cap.set(focus_property_id, int(72))
         # self.cap.set(28,72)
 
     def run(self):

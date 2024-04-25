@@ -158,3 +158,64 @@
     border-radius:10px;
     border: 2px solid white;
 }
+
+#pushButton_2, #pushButton_3,
+#pushButton_4 {
+    font: 75 9pt 'Segoe UI';
+    font-weight: bold;
+    background-color: rgba(0,121,213,255);
+    color: white;
+    border-radius: 10px;
+}
+
+#pushButton_2:hover, #pushButton_3:hover,
+#pushButton_4:hover {
+    font: 75 9pt 'Segoe UI';
+    font-weight: bold;
+    background-color: rgba(0,121,213,255);
+    color: white;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+#help_windows {
+    background-color: rgba(30,30,30,255);
+}
+
+#camera_feed_label_2 {
+    font: 75 16pt 'Segoe UI';
+    font-weight: bold;
+    color: rgba(172,177,187,255);
+}
+
+#label, #label_4,
+#label_6, #label_3,
+#label_5, #label_9,
+#label_10, #label_12,
+#label_14, #label_16,
+#label_18 {
+    font: 11pt 'Segoe UI';
+    color: rgba(172,177,187,255);
+}
+
+#label_2, #label_7,
+#label_8, #label_13,
+#label_11, #label_15,
+#label_17, #label_19 {
+    font: 11pt 'Segoe UI';
+    color: rgba(0,121,213,255);
+}
+
+#camera_feed_label_3, #camera_feed_label_4,
+#camera_feed_label_5, #camera_feed_label_6,
+#camera_feed_label_7 {
+    font: 75 16pt 'Segoe UI';
+    font-weight: bold;
+    color: rgba(172,177,187,255);
+}
+
+#save_image_label {
+    font: 75 12pt 'Segoe UI';
+    font-weight: bold;
+    color: rgba(172,177,187,255);
+}

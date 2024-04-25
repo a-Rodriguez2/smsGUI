@@ -236,14 +236,8 @@ class Ui_MainWindow(object):
     @staticmethod
     def image_folder():
 
-        # image_folder_name = 'Captured Images'
         report_folder_name = "Reports"
-        # image_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), image_folder_name)
         report_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), report_folder_name)
-        # try:
-        #     os.mkdir(image_folder)
-        # except FileExistsError:
-        #     pass
         try:
             os.mkdir(report_folder)
         except FileExistsError:
@@ -341,7 +335,6 @@ class Ui_MainWindow(object):
                     os.rename(os.path.join(directory, most_recent_file), os.path.join(directory, new_name))
                 else:
                     os.replace(os.path.join(directory, most_recent_file), os.path.join(directory, new_name))
-
 
 
         # fail-safe for misplaced model files
