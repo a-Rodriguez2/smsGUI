@@ -22,8 +22,8 @@ class VideoThread(QThread):
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,3000)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,4000)
         # self.cap.set(cv2.CAP_PROP_AUTOFOCUS,1)
-        self.cap.set(cv2.CAP_PROP_AUTO_EXPOSURE,0)
-        self.cap.set(focus_property_id, int(72))
+        self.cap.set(cv2.CAP_PROP_EXPOSURE,-6)
+        self.cap.set(focus_property_id, int(71))
         # self.cap.set(28,72)
 
     def run(self):
@@ -39,6 +39,7 @@ class VideoThread(QThread):
     def capture_frame(self, save_file):
         ret, frame = self.cap.read()
         if ret:
+            #frame = cv2.flip(frame, 1)
             # file 'save as' operation
             if not save_file:
                 filename, _ = QFileDialog.getSaveFileName(None, "Save Image", "", "Images (*.png *.jpg *.jpeg)")

@@ -208,9 +208,9 @@ class Ui_MainWindow(object):
 
     def update_image(self, frame):
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        flipImage = cv2.flip(image, 1)
+        flipImage = image
         convertToQt = QImage(flipImage.data, flipImage.shape[1], flipImage.shape[0], QImage.Format_RGB888)
-        pic = convertToQt.scaled(640, 480, Qt.KeepAspectRatio)
+        pic = convertToQt.scaled(1080, 1920, Qt.KeepAspectRatio)
         self.image_capture_page.video_frame_label.setPixmap(QPixmap.fromImage(pic))
 
     def video_finished(self):
