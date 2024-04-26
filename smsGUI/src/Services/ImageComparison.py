@@ -2,9 +2,64 @@ import cv2
 import numpy as np
 
 
+# def align_images(im1, im2):
+#     """
+#     Aligns two images using ORB feature detection and homography.
+
+#     Args:
+#     im1 (numpy.ndarray): The first image to be aligned.
+#     im2 (numpy.ndarray): The second image to which the first image is aligned.
+
+#     Returns:
+#     tuple: A tuple containing the aligned image, the homography matrix, and a boolean indicating success.
+#     """
+#     # Convert images to grayscale
+#     im1_gray = cv2.cvtColor(im1, cv2.COLOR_BGR2GRAY)
+#     im2_gray = cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)
+
+#     # Initialize ORB detector
+#     orb = cv2.ORB_create(20000)  # increased key points
+
+#     # Detect keypoints and descriptors
+#     keypoints1, descriptors1 = orb.detectAndCompute(im1_gray, None)
+#     keypoints2, descriptors2 = orb.detectAndCompute(im2_gray, None)
+
+#     # Create BFMatcher object
+#     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
+
+#     # Match descriptors
+#     matches = bf.knnMatch(descriptors1, descriptors2, k=2)
+
+#     # Apply ratio test to find good matches
+#     good = []
+#     for m, n in matches:
+#         if m.distance < 0.75 * n.distance:
+#             good.append(m)
+
+#     # Minimum number of good matches to proceed
+#     MIN_MATCH_COUNT = 10
+
+#     if len(good) > MIN_MATCH_COUNT:
+#         # Extract locations of matched keypoints
+#         src_pts = np.float32(
+#             [keypoints1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+#         dst_pts = np.float32(
+#             [keypoints2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+
+#         # Find homography using RANSAC
+#         h, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
+
+#         # Use homography to warp image
+#         height, width, channels = im2.shape
+#         im1_aligned = cv2.warpPerspective(im1, h, (width, height))
+#         return im1_aligned, h, True
+#     else:
+#         print(f"Not enough matches are found - {len(good)}/{MIN_MATCH_COUNT}")
+#         return im1, None, False
+    
 def align_images(im1, im2):
     """
-    Aligns two images using ORB feature detection and homography.
+    Aligns two images using SIFT feature detection and homography.
 
     Args:
     im1 (numpy.ndarray): The first image to be aligned.
@@ -17,34 +72,35 @@ def align_images(im1, im2):
     im1_gray = cv2.cvtColor(im1, cv2.COLOR_BGR2GRAY)
     im2_gray = cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)
 
-    # Initialize ORB detector
-    orb = cv2.ORB_create(5000)  # increased key points
+    # Initialize SIFT detector
+    sift = cv2.SIFT_create()
 
     # Detect keypoints and descriptors
-    keypoints1, descriptors1 = orb.detectAndCompute(im1_gray, None)
-    keypoints2, descriptors2 = orb.detectAndCompute(im2_gray, None)
+    keypoints1, descriptors1 = sift.detectAndCompute(im1_gray, None)
+    keypoints2, descriptors2 = sift.detectAndCompute(im2_gray, None)
 
-    # Create BFMatcher object
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
+    # Create FLANN matcher
+    FLANN_INDEX_KDTREE = 1
+    index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
+    search_params = dict(checks=50)
+    flann = cv2.FlannBasedMatcher(index_params, search_params)
 
     # Match descriptors
-    matches = bf.knnMatch(descriptors1, descriptors2, k=2)
+    matches = flann.knnMatch(descriptors1, descriptors2, k=2)
 
     # Apply ratio test to find good matches
-    good = []
+    good_matches = []
     for m, n in matches:
-        if m.distance < 0.75 * n.distance:
-            good.append(m)
+        if m.distance < 0.7 * n.distance:
+            good_matches.append(m)
 
     # Minimum number of good matches to proceed
     MIN_MATCH_COUNT = 10
 
-    if len(good) > MIN_MATCH_COUNT:
+    if len(good_matches) > MIN_MATCH_COUNT:
         # Extract locations of matched keypoints
-        src_pts = np.float32(
-            [keypoints1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
-        dst_pts = np.float32(
-            [keypoints2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+        src_pts = np.float32([keypoints1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
+        dst_pts = np.float32([keypoints2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
 
         # Find homography using RANSAC
         h, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
@@ -54,9 +110,8 @@ def align_images(im1, im2):
         im1_aligned = cv2.warpPerspective(im1, h, (width, height))
         return im1_aligned, h, True
     else:
-        print(f"Not enough matches are found - {len(good)}/{MIN_MATCH_COUNT}")
+        print(f"Not enough good matches found - {len(good_matches)}/{MIN_MATCH_COUNT}")
         return im1, None, False
-
 
 def highlight_differences(image1, image2, sensitivity_threshold=45, blur_value=(21, 21)):
     """
@@ -106,7 +161,7 @@ def highlight_differences(image1, image2, sensitivity_threshold=45, blur_value=(
     highlighted2 = cv2.merge([np.zeros_like(thresh_diff2), np.zeros_like(
         thresh_diff2), thresh_diff2])  # Red for unique in image2
 
-   # Combine the highlighted images
+    # Combine the highlighted images
     highlighted = cv2.addWeighted(highlighted2, 1, np.zeros_like(highlighted2), 1, 0)
 
     # Convert the first grayscale image to BGR for background

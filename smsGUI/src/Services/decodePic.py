@@ -89,8 +89,7 @@ def try_decode(image, alpha, beta, kernel_value, is_qr_detection):
     decoded_data = qr_decode(sharpened_image) if is_qr_detection else barcode_decode(sharpened_image)
     if decoded_data:
         decoded_string = decoded_data[0].data.decode('utf-8')
-        if decoded_string.isalnum():  # Check if the decoded string is alphanumeric
+        if decoded_string.isalnum() and len(decoded_string) > 10:  # Check if the decoded string is alphanumeric
             return True, decoded_string, sharpened_image
     # Ensure there is always a return statement providing a tuple of three values
     return False, "", sharpened_image
-
